@@ -1,0 +1,4 @@
+python3 unit_convert.py -c sawRobotIO1394-PSM1-334809.xml.json -f capture_Mon_Dec_30_02_26_20_2024.csv
+
+g++ -std=c++17 -Wall -O2 -Ijsoncpp/include zynq_test.cpp jsoncpp/src/lib_json/json_reader.cpp jsoncpp/src/lib_json/json_value.cpp jsoncpp/src/lib_json/json_writer.cpp -o zynq_test
+./zynq_test sawRobotIO1394-PSM1-334809.xml.json

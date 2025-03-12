@@ -1,0 +1,837 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineSystem.cmake:200 (message)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      The target system is: Linux -  - arm
+      The host system is: Darwin - 23.4.0 - arm64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler: /opt/homebrew/opt/llvm/bin/clang 
+      Build flags: -mfloat-abi=hard;--target=arm-linux-gnueabihf
+      Id flags: -c;--target=arm-linux-gnueabihf 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.o"
+      
+      The C compiler identification is Clang, found in:
+        /Users/peter/Desktop/Research/zynq/build/CMakeFiles/3.31.4/CompilerIdC/CMakeCCompilerId.o
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler: /opt/homebrew/opt/llvm/bin/clang++ 
+      Build flags: -mfloat-abi=hard;--target=arm-linux-gnueabihf
+      Id flags: -c;--target=arm-linux-gnueabihf 
+      
+      The output was:
+      0
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.o"
+      
+      The CXX compiler identification is Clang, found in:
+        /Users/peter/Desktop/Research/zynq/build/CMakeFiles/3.31.4/CompilerIdCXX/CMakeCXXCompilerId.o
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Yhtsyx"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Yhtsyx"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_C_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Yhtsyx'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b44f2/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_b44f2.dir/build.make CMakeFiles/cmTC_b44f2.dir/build
+        Building C object CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o
+        /opt/homebrew/opt/llvm/bin/clang --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP  -mfloat-abi=hard --target=arm-linux-gnueabihf  -fPIE   -v -MD -MT CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        Homebrew clang version 19.1.7
+        Target: arm-unknown-linux-gnueabihf
+        Thread model: posix
+        InstalledDir: /opt/homebrew/Cellar/llvm/19.1.7/bin
+        System configuration file directory: /opt/homebrew/etc/clang
+        User configuration file directory: /Users/peter/.config/clang
+         (in-process)
+         "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-19" -cc1 -triple armv6kz-unknown-linux-gnueabihf -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -target-cpu arm1176jzf-s -target-feature +vfp2 -target-feature +vfp2sp -target-feature -vfp3 -target-feature -vfp3d16 -target-feature -vfp3d16sp -target-feature -vfp3sp -target-feature -fp16 -target-feature -vfp4 -target-feature -vfp4d16 -target-feature -vfp4d16sp -target-feature -vfp4sp -target-feature -fp-armv8 -target-feature -fp-armv8d16 -target-feature -fp-armv8d16sp -target-feature -fp-armv8sp -target-feature -fullfp16 -target-feature +fp64 -target-feature -d32 -target-feature -neon -target-feature -sha2 -target-feature -aes -target-feature -fp16fml -target-feature +strict-align -target-abi aapcs-linux -mfloat-abi hard -Wunaligned-access -debugger-tuning=gdb -fdebug-compilation-dir=/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Yhtsyx -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Yhtsyx -resource-dir /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19 -dependency-file CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -sys-header-deps -D __ARM_PCS_VFP -isysroot /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -internal-isystem /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include -internal-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/local/include -internal-externc-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/include -internal-externc-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include -ferror-limit 19 -fno-signed-char -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -faddrsig -o CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c
+        clang -cc1 version 19.1.7 based upon LLVM 19.1.7 default target arm64-apple-darwin23.4.0
+        ignoring nonexistent directory "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/local/include"
+        ignoring nonexistent directory "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include
+         /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include
+        End of search list.
+        Linking C executable cmTC_b44f2
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b44f2.dir/link.txt --verbose=1
+        Homebrew clang version 19.1.7
+        Target: arm-unknown-linux-gnueabihf
+        Thread model: posix
+        InstalledDir: /opt/homebrew/Cellar/llvm/19.1.7/bin
+        System configuration file directory: /opt/homebrew/etc/clang
+        User configuration file directory: /Users/peter/.config/clang
+         "/opt/homebrew/bin/ld.lld" --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -EL -X --hash-style=gnu --eh-frame-hdr -m armelf_linux_eabi -pie -dynamic-linker /lib/ld-linux-armhf.so.3 -o cmTC_b44f2 /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib -z notext -v CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -rpath "\\$ORIGIN" -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o
+        Homebrew LLD 19.1.7 (compatible with GNU linkers)
+        /opt/homebrew/opt/llvm/bin/clang --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie -v -Wl,-v CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -o cmTC_b44f2  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Parsed C implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include]
+          add: [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include]
+        end of search list found
+        collapse include dir [/opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include] ==> [/opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include]
+        collapse include dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include]
+        implicit include dirs: [/opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Yhtsyx']
+        ignore line: []
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_b44f2/fast]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_b44f2.dir/build.make CMakeFiles/cmTC_b44f2.dir/build]
+        ignore line: [Building C object CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o]
+        ignore line: [/opt/homebrew/opt/llvm/bin/clang --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP  -mfloat-abi=hard --target=arm-linux-gnueabihf  -fPIE   -v -MD -MT CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -MF CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o.d -o CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [Homebrew clang version 19.1.7]
+        ignore line: [Target: arm-unknown-linux-gnueabihf]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /opt/homebrew/Cellar/llvm/19.1.7/bin]
+        ignore line: [System configuration file directory: /opt/homebrew/etc/clang]
+        ignore line: [User configuration file directory: /Users/peter/.config/clang]
+        ignore line: [ (in-process)]
+        ignore line: [ "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-19" -cc1 -triple armv6kz-unknown-linux-gnueabihf -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCCompilerABI.c -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -target-cpu arm1176jzf-s -target-feature +vfp2 -target-feature +vfp2sp -target-feature -vfp3 -target-feature -vfp3d16 -target-feature -vfp3d16sp -target-feature -vfp3sp -target-feature -fp16 -target-feature -vfp4 -target-feature -vfp4d16 -target-feature -vfp4d16sp -target-feature -vfp4sp -target-feature -fp-armv8 -target-feature -fp-armv8d16 -target-feature -fp-armv8d16sp -target-feature -fp-armv8sp -target-feature -fullfp16 -target-feature +fp64 -target-feature -d32 -target-feature -neon -target-feature -sha2 -target-feature -aes -target-feature -fp16fml -target-feature +strict-align -target-abi aapcs-linux -mfloat-abi hard -Wunaligned-access -debugger-tuning=gdb -fdebug-compilation-dir=/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Yhtsyx -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Yhtsyx -resource-dir /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19 -dependency-file CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o.d -MT CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -sys-header-deps -D __ARM_PCS_VFP -isysroot /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -internal-isystem /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include -internal-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/local/include -internal-externc-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/include -internal-externc-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include -ferror-limit 19 -fno-signed-char -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -faddrsig -o CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -x c /opt/homebrew/share/cmake/Modules/CMakeCCompilerABI.c]
+        ignore line: [clang -cc1 version 19.1.7 based upon LLVM 19.1.7 default target arm64-apple-darwin23.4.0]
+        ignore line: [ignoring nonexistent directory "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include]
+        ignore line: [ /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Linking C executable cmTC_b44f2]
+        ignore line: [/opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_b44f2.dir/link.txt --verbose=1]
+        ignore line: [Homebrew clang version 19.1.7]
+        ignore line: [Target: arm-unknown-linux-gnueabihf]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /opt/homebrew/Cellar/llvm/19.1.7/bin]
+        ignore line: [System configuration file directory: /opt/homebrew/etc/clang]
+        ignore line: [User configuration file directory: /Users/peter/.config/clang]
+        link line: [ "/opt/homebrew/bin/ld.lld" --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -EL -X --hash-style=gnu --eh-frame-hdr -m armelf_linux_eabi -pie -dynamic-linker /lib/ld-linux-armhf.so.3 -o cmTC_b44f2 /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib -z notext -v CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o -rpath "\\$ORIGIN" -lgcc --as-needed -lgcc_s --no-as-needed -lc -lgcc --as-needed -lgcc_s --no-as-needed /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o]
+          arg [/opt/homebrew/bin/ld.lld] ==> ignore
+          arg [--sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external] ==> ignore
+          arg [-EL] ==> ignore
+          arg [-X] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [armelf_linux_eabi] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib/ld-linux-armhf.so.3] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_b44f2] ==> ignore
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o]
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o]
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib]
+          arg [-znotext] ==> ignore
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_b44f2.dir/CMakeCCompilerABI.c.o] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [$ORIGIN] ==> ignore
+          arg [-lgcc] ==> lib [gcc]
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--no-as-needed] ==> ignore
+          arg [-lc] ==> lib [c]
+          arg [-lgcc] ==> lib [gcc]
+          arg [--as-needed] ==> ignore
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [--no-as-needed] ==> ignore
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o]
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o]
+        linker tool for 'C': /opt/homebrew/bin/ld.lld
+        collapse obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/Scrt1.o]
+        collapse obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/crti.o]
+        collapse obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/crtn.o]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib]
+        implicit libs: [gcc;gcc_s;c;gcc;gcc_s]
+        implicit objs: [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/Scrt1.o;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/crti.o;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/crtn.o]
+        implicit dirs: [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Running the C compiler's linker: "/opt/homebrew/bin/ld.lld" "-v"
+      Homebrew LLD 19.1.7 (compatible with GNU linkers)
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-FUBNvD"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-FUBNvD"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-FUBNvD'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_41a7f/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_41a7f.dir/build.make CMakeFiles/cmTC_41a7f.dir/build
+        Building CXX object CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP  -mfloat-abi=hard --target=arm-linux-gnueabihf  -fPIE   -v -MD -MT CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        Homebrew clang version 19.1.7
+        Target: arm-unknown-linux-gnueabihf
+        Thread model: posix
+        InstalledDir: /opt/homebrew/Cellar/llvm/19.1.7/bin
+        System configuration file directory: /opt/homebrew/etc/clang
+        User configuration file directory: /Users/peter/.config/clang
+         (in-process)
+         "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-19" -cc1 -triple armv6kz-unknown-linux-gnueabihf -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -target-cpu arm1176jzf-s -target-feature +vfp2 -target-feature +vfp2sp -target-feature -vfp3 -target-feature -vfp3d16 -target-feature -vfp3d16sp -target-feature -vfp3sp -target-feature -fp16 -target-feature -vfp4 -target-feature -vfp4d16 -target-feature -vfp4d16sp -target-feature -vfp4sp -target-feature -fp-armv8 -target-feature -fp-armv8d16 -target-feature -fp-armv8d16sp -target-feature -fp-armv8sp -target-feature -fullfp16 -target-feature +fp64 -target-feature -d32 -target-feature -neon -target-feature -sha2 -target-feature -aes -target-feature -fp16fml -target-feature +strict-align -target-abi aapcs-linux -mfloat-abi hard -Wunaligned-access -debugger-tuning=gdb -fdebug-compilation-dir=/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-FUBNvD -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-FUBNvD -resource-dir /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19 -dependency-file CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -D __ARM_PCS_VFP -isysroot /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -internal-isystem /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include -internal-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/local/include -internal-externc-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/include -internal-externc-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include -fdeprecated-macro -ferror-limit 19 -fno-signed-char -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp
+        clang -cc1 version 19.1.7 based upon LLVM 19.1.7 default target arm64-apple-darwin23.4.0
+        ignoring nonexistent directory "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/local/include"
+        ignoring nonexistent directory "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/include"
+        #include "..." search starts here:
+        #include <...> search starts here:
+         /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include
+         /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include
+        End of search list.
+        Linking CXX executable cmTC_41a7f
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_41a7f.dir/link.txt --verbose=1
+        Homebrew clang version 19.1.7
+        Target: arm-unknown-linux-gnueabihf
+        Thread model: posix
+        InstalledDir: /opt/homebrew/Cellar/llvm/19.1.7/bin
+        System configuration file directory: /opt/homebrew/etc/clang
+        User configuration file directory: /Users/peter/.config/clang
+         "/opt/homebrew/bin/ld.lld" --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -EL -X --hash-style=gnu --eh-frame-hdr -m armelf_linux_eabi -pie -dynamic-linker /lib/ld-linux-armhf.so.3 -o cmTC_41a7f /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib -z notext -v CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -rpath "\\$ORIGIN" -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o
+        Homebrew LLD 19.1.7 (compatible with GNU linkers)
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie -v -Wl,-v CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -o cmTC_41a7f  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:182 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Parsed CXX implicit include dir info: rv=done
+        found start of include info
+        found start of implicit include info
+          add: [/opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include]
+          add: [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include]
+        end of search list found
+        collapse include dir [/opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include] ==> [/opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include]
+        collapse include dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include]
+        implicit include dirs: [/opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include]
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?))("|,| |$)]
+        ignore line: [Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-FUBNvD']
+        ignore line: []
+        ignore line: [Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_41a7f/fast]
+        ignore line: [/Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_41a7f.dir/build.make CMakeFiles/cmTC_41a7f.dir/build]
+        ignore line: [Building CXX object CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o]
+        ignore line: [/opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP  -mfloat-abi=hard --target=arm-linux-gnueabihf  -fPIE   -v -MD -MT CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -MF CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o.d -o CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -c /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [Homebrew clang version 19.1.7]
+        ignore line: [Target: arm-unknown-linux-gnueabihf]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /opt/homebrew/Cellar/llvm/19.1.7/bin]
+        ignore line: [System configuration file directory: /opt/homebrew/etc/clang]
+        ignore line: [User configuration file directory: /Users/peter/.config/clang]
+        ignore line: [ (in-process)]
+        ignore line: [ "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-19" -cc1 -triple armv6kz-unknown-linux-gnueabihf -emit-obj -disable-free -clear-ast-before-backend -disable-llvm-verifier -discard-value-names -main-file-name CMakeCXXCompilerABI.cpp -mrelocation-model pic -pic-level 2 -pic-is-pie -mframe-pointer=all -fmath-errno -ffp-contract=on -fno-rounding-math -mconstructor-aliases -target-cpu arm1176jzf-s -target-feature +vfp2 -target-feature +vfp2sp -target-feature -vfp3 -target-feature -vfp3d16 -target-feature -vfp3d16sp -target-feature -vfp3sp -target-feature -fp16 -target-feature -vfp4 -target-feature -vfp4d16 -target-feature -vfp4d16sp -target-feature -vfp4sp -target-feature -fp-armv8 -target-feature -fp-armv8d16 -target-feature -fp-armv8d16sp -target-feature -fp-armv8sp -target-feature -fullfp16 -target-feature +fp64 -target-feature -d32 -target-feature -neon -target-feature -sha2 -target-feature -aes -target-feature -fp16fml -target-feature +strict-align -target-abi aapcs-linux -mfloat-abi hard -Wunaligned-access -debugger-tuning=gdb -fdebug-compilation-dir=/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-FUBNvD -target-linker-version 1115.7.3 -v -fcoverage-compilation-dir=/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-FUBNvD -resource-dir /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19 -dependency-file CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o.d -MT CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -sys-header-deps -D __ARM_PCS_VFP -isysroot /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -internal-isystem /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include -internal-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/local/include -internal-externc-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/include -internal-externc-isystem /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include -fdeprecated-macro -ferror-limit 19 -fno-signed-char -fgnuc-version=4.2.1 -fskip-odr-check-in-gmf -fcxx-exceptions -fexceptions -faddrsig -D__GCC_HAVE_DWARF2_CFI_ASM=1 -o CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -x c++ /opt/homebrew/share/cmake/Modules/CMakeCXXCompilerABI.cpp]
+        ignore line: [clang -cc1 version 19.1.7 based upon LLVM 19.1.7 default target arm64-apple-darwin23.4.0]
+        ignore line: [ignoring nonexistent directory "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/local/include"]
+        ignore line: [ignoring nonexistent directory "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/include"]
+        ignore line: [#include "..." search starts here:]
+        ignore line: [#include <...> search starts here:]
+        ignore line: [ /opt/homebrew/Cellar/llvm/19.1.7/lib/clang/19/include]
+        ignore line: [ /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include]
+        ignore line: [End of search list.]
+        ignore line: [Linking CXX executable cmTC_41a7f]
+        ignore line: [/opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_41a7f.dir/link.txt --verbose=1]
+        ignore line: [Homebrew clang version 19.1.7]
+        ignore line: [Target: arm-unknown-linux-gnueabihf]
+        ignore line: [Thread model: posix]
+        ignore line: [InstalledDir: /opt/homebrew/Cellar/llvm/19.1.7/bin]
+        ignore line: [System configuration file directory: /opt/homebrew/etc/clang]
+        ignore line: [User configuration file directory: /Users/peter/.config/clang]
+        link line: [ "/opt/homebrew/bin/ld.lld" --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -EL -X --hash-style=gnu --eh-frame-hdr -m armelf_linux_eabi -pie -dynamic-linker /lib/ld-linux-armhf.so.3 -o cmTC_41a7f /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib -z notext -v CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o -rpath "\\$ORIGIN" -lstdc++ -lm -lgcc_s -lgcc -lc -lgcc_s -lgcc /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o /Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o]
+          arg [/opt/homebrew/bin/ld.lld] ==> ignore
+          arg [--sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external] ==> ignore
+          arg [-EL] ==> ignore
+          arg [-X] ==> ignore
+          arg [--hash-style=gnu] ==> ignore
+          arg [--eh-frame-hdr] ==> ignore
+          arg [-m] ==> ignore
+          arg [armelf_linux_eabi] ==> ignore
+          arg [-pie] ==> ignore
+          arg [-dynamic-linker] ==> ignore
+          arg [/lib/ld-linux-armhf.so.3] ==> ignore
+          arg [-o] ==> ignore
+          arg [cmTC_41a7f] ==> ignore
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o]
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o]
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib]
+          arg [-L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib] ==> dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib]
+          arg [-znotext] ==> ignore
+          arg [-v] ==> ignore
+          arg [CMakeFiles/cmTC_41a7f.dir/CMakeCXXCompilerABI.cpp.o] ==> ignore
+          arg [-rpath] ==> ignore
+          arg [$ORIGIN] ==> ignore
+          arg [-lstdc++] ==> lib [stdc++]
+          arg [-lm] ==> lib [m]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [-lc] ==> lib [c]
+          arg [-lgcc_s] ==> lib [gcc_s]
+          arg [-lgcc] ==> lib [gcc]
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o]
+          arg [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o] ==> obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o]
+        linker tool for 'CXX': /opt/homebrew/bin/ld.lld
+        collapse obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/Scrt1.o] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/Scrt1.o]
+        collapse obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crti.o] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/crti.o]
+        collapse obj [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib/crtn.o] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/crtn.o]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib/../lib] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/../lib] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib]
+        collapse library dir [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib] ==> [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib]
+        implicit libs: [stdc++;m;gcc_s;gcc;c;gcc_s;gcc]
+        implicit objs: [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/Scrt1.o;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/crti.o;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtbeginS.o;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0/crtendS.o;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/crtn.o]
+        implicit dirs: [/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/lib;/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib]
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "/opt/homebrew/share/cmake/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:14 (project)"
+    message: |
+      Running the CXX compiler's linker: "/opt/homebrew/bin/ld.lld" "-v"
+      Homebrew LLD 19.1.7 (compatible with GNU linkers)
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:24 (check_cxx_compiler_flag)"
+    checks:
+      - "Performing Test CXX_SUPPORTS_WEXTRA"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-ALqqnp"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-ALqqnp"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "CXX_SUPPORTS_WEXTRA"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-ALqqnp'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_8eaf8/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_8eaf8.dir/build.make CMakeFiles/cmTC_8eaf8.dir/build
+        Building CXX object CMakeFiles/cmTC_8eaf8.dir/src.cxx.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -DCXX_SUPPORTS_WEXTRA -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf  -fPIE   -Wextra -MD -MT CMakeFiles/cmTC_8eaf8.dir/src.cxx.o -MF CMakeFiles/cmTC_8eaf8.dir/src.cxx.o.d -o CMakeFiles/cmTC_8eaf8.dir/src.cxx.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-ALqqnp/src.cxx
+        Linking CXX executable cmTC_8eaf8
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8eaf8.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_8eaf8.dir/src.cxx.o -o cmTC_8eaf8  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:29 (check_cxx_compiler_flag)"
+    checks:
+      - "Performing Test CXX_SUPPORTS_WALL"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-t1g1kG"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-t1g1kG"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf -Wextra"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "CXX_SUPPORTS_WALL"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-t1g1kG'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3383b/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_3383b.dir/build.make CMakeFiles/cmTC_3383b.dir/build
+        Building CXX object CMakeFiles/cmTC_3383b.dir/src.cxx.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -DCXX_SUPPORTS_WALL -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf -Wextra  -fPIE   -Wall -MD -MT CMakeFiles/cmTC_3383b.dir/src.cxx.o -MF CMakeFiles/cmTC_3383b.dir/src.cxx.o.d -o CMakeFiles/cmTC_3383b.dir/src.cxx.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-t1g1kG/src.cxx
+        Linking CXX executable cmTC_3383b
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3383b.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf -Wextra  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_3383b.dir/src.cxx.o -o cmTC_3383b  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckCompilerFlag.cmake:18 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXCompilerFlag.cmake:55 (cmake_check_compiler_flag)"
+      - "CMakeLists.txt:34 (check_cxx_compiler_flag)"
+    checks:
+      - "Performing Test CXX_SUPPORTS_FPIC"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-oaKeF0"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-oaKeF0"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf -Wextra -Wall"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "CXX_SUPPORTS_FPIC"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-oaKeF0'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_f345c/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_f345c.dir/build.make CMakeFiles/cmTC_f345c.dir/build
+        Building CXX object CMakeFiles/cmTC_f345c.dir/src.cxx.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -DCXX_SUPPORTS_FPIC -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf -Wextra -Wall  -fPIE   -fPIC -MD -MT CMakeFiles/cmTC_f345c.dir/src.cxx.o -MF CMakeFiles/cmTC_f345c.dir/src.cxx.o.d -o CMakeFiles/cmTC_f345c.dir/src.cxx.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-oaKeF0/src.cxx
+        Linking CXX executable cmTC_f345c
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f345c.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf -Wextra -Wall  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_f345c.dir/src.cxx.o -o cmTC_f345c  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+...
+
+---
+events:
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckFunctionExists.cmake:93 (try_compile)"
+      - "jsoncpp/CMakeLists.txt:97 (check_function_exists)"
+    checks:
+      - "Looking for memset_s"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-QpVy3h"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-QpVy3h"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_C_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_C_FLAGS_DEBUG: "-g"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_MODULE_PATH: "/Users/peter/Desktop/Research/zynq/jsoncpp/cmake"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "HAVE_MEMSET_S"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-QpVy3h'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_8c9af/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_8c9af.dir/build.make CMakeFiles/cmTC_8c9af.dir/build
+        Building C object CMakeFiles/cmTC_8c9af.dir/CheckFunctionExists.c.o
+        /opt/homebrew/opt/llvm/bin/clang --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf -DCHECK_FUNCTION_EXISTS=memset_s -fPIE -MD -MT CMakeFiles/cmTC_8c9af.dir/CheckFunctionExists.c.o -MF CMakeFiles/cmTC_8c9af.dir/CheckFunctionExists.c.o.d -o CMakeFiles/cmTC_8c9af.dir/CheckFunctionExists.c.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-QpVy3h/CheckFunctionExists.c
+        Linking C executable cmTC_8c9af
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_8c9af.dir/link.txt --verbose=1
+        ld.lld: error: undefined symbol: memset_s
+        >>> referenced by CheckFunctionExists.c
+        >>>               CMakeFiles/cmTC_8c9af.dir/CheckFunctionExists.c.o:(main)
+        clang: error: linker command failed with exit code 1 (use -v to see invocation)
+        /opt/homebrew/opt/llvm/bin/clang --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf -DCHECK_FUNCTION_EXISTS=memset_s -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_8c9af.dir/CheckFunctionExists.c.o -o cmTC_8c9af  -Wl,-rpath,"\\$ORIGIN"
+        make[1]: *** [cmTC_8c9af] Error 1
+        make: *** [cmTC_8c9af/fast] Error 2
+        
+      exitCode: 2
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckIncludeFileCXX.cmake:98 (try_compile)"
+      - "jsoncpp/src/lib_json/CMakeLists.txt:11 (check_include_file_cxx)"
+    checks:
+      - "Looking for C++ include clocale"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-U39H5E"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-U39H5E"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_MODULE_PATH: "/Users/peter/Desktop/Research/zynq/jsoncpp/cmake"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "HAVE_CLOCALE"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-U39H5E'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_3a952/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_3a952.dir/build.make CMakeFiles/cmTC_3a952.dir/build
+        Building CXX object CMakeFiles/cmTC_3a952.dir/CheckIncludeFile.cxx.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf  -std=c++11 -fPIE -MD -MT CMakeFiles/cmTC_3a952.dir/CheckIncludeFile.cxx.o -MF CMakeFiles/cmTC_3a952.dir/CheckIncludeFile.cxx.o.d -o CMakeFiles/cmTC_3a952.dir/CheckIncludeFile.cxx.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-U39H5E/CheckIncludeFile.cxx
+        Linking CXX executable cmTC_3a952
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_3a952.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_3a952.dir/CheckIncludeFile.cxx.o -o cmTC_3a952  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckSymbolExists.cmake:163 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckCXXSymbolExists.cmake:74 (__CHECK_SYMBOL_EXISTS_IMPL)"
+      - "jsoncpp/src/lib_json/CMakeLists.txt:12 (check_cxx_symbol_exists)"
+    checks:
+      - "Looking for localeconv"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Wf9csw"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Wf9csw"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_MODULE_PATH: "/Users/peter/Desktop/Research/zynq/jsoncpp/cmake"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "HAVE_LOCALECONV"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Wf9csw'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_f4cbd/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_f4cbd.dir/build.make CMakeFiles/cmTC_f4cbd.dir/build
+        Building CXX object CMakeFiles/cmTC_f4cbd.dir/CheckSymbolExists.cxx.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf  -std=c++11 -fPIE -MD -MT CMakeFiles/cmTC_f4cbd.dir/CheckSymbolExists.cxx.o -MF CMakeFiles/cmTC_f4cbd.dir/CheckSymbolExists.cxx.o.d -o CMakeFiles/cmTC_f4cbd.dir/CheckSymbolExists.cxx.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Wf9csw/CheckSymbolExists.cxx
+        Linking CXX executable cmTC_f4cbd
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_f4cbd.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_f4cbd.dir/CheckSymbolExists.cxx.o -o cmTC_f4cbd  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckIncludeFileCXX.cmake:98 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckTypeSize.cmake:266 (check_include_file_cxx)"
+      - "jsoncpp/src/lib_json/CMakeLists.txt:15 (check_type_size)"
+    checks:
+      - "Looking for C++ include sys/types.h"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-dDlQoh"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-dDlQoh"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_MODULE_PATH: "/Users/peter/Desktop/Research/zynq/jsoncpp/cmake"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "HAVE_SYS_TYPES_H"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-dDlQoh'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_7d39b/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_7d39b.dir/build.make CMakeFiles/cmTC_7d39b.dir/build
+        Building CXX object CMakeFiles/cmTC_7d39b.dir/CheckIncludeFile.cxx.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf  -std=c++11 -fPIE -MD -MT CMakeFiles/cmTC_7d39b.dir/CheckIncludeFile.cxx.o -MF CMakeFiles/cmTC_7d39b.dir/CheckIncludeFile.cxx.o.d -o CMakeFiles/cmTC_7d39b.dir/CheckIncludeFile.cxx.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-dDlQoh/CheckIncludeFile.cxx
+        Linking CXX executable cmTC_7d39b
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_7d39b.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_7d39b.dir/CheckIncludeFile.cxx.o -o cmTC_7d39b  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckIncludeFileCXX.cmake:98 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckTypeSize.cmake:271 (check_include_file_cxx)"
+      - "jsoncpp/src/lib_json/CMakeLists.txt:15 (check_type_size)"
+    checks:
+      - "Looking for C++ include stdint.h"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Wvz6F3"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Wvz6F3"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_MODULE_PATH: "/Users/peter/Desktop/Research/zynq/jsoncpp/cmake"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "HAVE_STDINT_H"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Wvz6F3'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_40114/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_40114.dir/build.make CMakeFiles/cmTC_40114.dir/build
+        Building CXX object CMakeFiles/cmTC_40114.dir/CheckIncludeFile.cxx.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf  -std=c++11 -fPIE -MD -MT CMakeFiles/cmTC_40114.dir/CheckIncludeFile.cxx.o -MF CMakeFiles/cmTC_40114.dir/CheckIncludeFile.cxx.o.d -o CMakeFiles/cmTC_40114.dir/CheckIncludeFile.cxx.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-Wvz6F3/CheckIncludeFile.cxx
+        Linking CXX executable cmTC_40114
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_40114.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_40114.dir/CheckIncludeFile.cxx.o -o cmTC_40114  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckIncludeFileCXX.cmake:98 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckTypeSize.cmake:272 (check_include_file_cxx)"
+      - "jsoncpp/src/lib_json/CMakeLists.txt:15 (check_type_size)"
+    checks:
+      - "Looking for C++ include stddef.h"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-jnnFdB"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-jnnFdB"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_MODULE_PATH: "/Users/peter/Desktop/Research/zynq/jsoncpp/cmake"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "HAVE_STDDEF_H"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-jnnFdB'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_035be/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_035be.dir/build.make CMakeFiles/cmTC_035be.dir/build
+        Building CXX object CMakeFiles/cmTC_035be.dir/CheckIncludeFile.cxx.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf  -std=c++11 -fPIE -MD -MT CMakeFiles/cmTC_035be.dir/CheckIncludeFile.cxx.o -MF CMakeFiles/cmTC_035be.dir/CheckIncludeFile.cxx.o.d -o CMakeFiles/cmTC_035be.dir/CheckIncludeFile.cxx.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-jnnFdB/CheckIncludeFile.cxx
+        Linking CXX executable cmTC_035be
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_035be.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_035be.dir/CheckIncludeFile.cxx.o -o cmTC_035be  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/CheckTypeSize.cmake:156 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckTypeSize.cmake:283 (__check_type_size_impl)"
+      - "jsoncpp/src/lib_json/CMakeLists.txt:15 (check_type_size)"
+    checks:
+      - "Check size of lconv"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-rBYdSX"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-rBYdSX"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_MODULE_PATH: "/Users/peter/Desktop/Research/zynq/jsoncpp/cmake"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "HAVE_LCONV_SIZE"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-rBYdSX'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_25b62/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_25b62.dir/build.make CMakeFiles/cmTC_25b62.dir/build
+        Building CXX object CMakeFiles/cmTC_25b62.dir/LCONV_SIZE.cpp.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf  -std=c++11 -fPIE -MD -MT CMakeFiles/cmTC_25b62.dir/LCONV_SIZE.cpp.o -MF CMakeFiles/cmTC_25b62.dir/LCONV_SIZE.cpp.o.d -o CMakeFiles/cmTC_25b62.dir/LCONV_SIZE.cpp.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-rBYdSX/LCONV_SIZE.cpp
+        Linking CXX executable cmTC_25b62
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_25b62.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_25b62.dir/LCONV_SIZE.cpp.o -o cmTC_25b62  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "/opt/homebrew/share/cmake/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "/opt/homebrew/share/cmake/Modules/CheckSourceCompiles.cmake:89 (cmake_check_source_compiles)"
+      - "/opt/homebrew/share/cmake/Modules/CheckStructHasMember.cmake:81 (CHECK_SOURCE_COMPILES)"
+      - "jsoncpp/src/lib_json/CMakeLists.txt:17 (check_struct_has_member)"
+    checks:
+      - "Performing Test HAVE_DECIMAL_POINT"
+    directories:
+      source: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-IieTo6"
+      binary: "/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-IieTo6"
+    cmakeVariables:
+      CMAKE_CXX_COMPILER_CLANG_SCAN_DEPS: "/opt/homebrew/Cellar/llvm/19.1.7/bin/clang-scan-deps"
+      CMAKE_CXX_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS: "-mfloat-abi=hard --target=arm-linux-gnueabihf"
+      CMAKE_CXX_FLAGS_DEBUG: "-g"
+      CMAKE_C_COMPILER_TARGET: "arm-linux-gnueabihf"
+      CMAKE_EXE_LINKER_FLAGS: "-Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie"
+      CMAKE_MODULE_PATH: "/Users/peter/Desktop/Research/zynq/jsoncpp/cmake"
+      CMAKE_POSITION_INDEPENDENT_CODE: "TRUE"
+      CMAKE_SYSROOT: "/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external"
+      gccVer: "12.2.0"
+    buildResult:
+      variable: "HAVE_DECIMAL_POINT"
+      cached: true
+      stdout: |
+        Change Dir: '/Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-IieTo6'
+        
+        Run Build Command(s): /opt/homebrew/bin/cmake -E env VERBOSE=1 /usr/bin/make -f Makefile cmTC_60b43/fast
+        /Library/Developer/CommandLineTools/usr/bin/make  -f CMakeFiles/cmTC_60b43.dir/build.make CMakeFiles/cmTC_60b43.dir/build
+        Building CXX object CMakeFiles/cmTC_60b43.dir/src.cxx.o
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -DHAVE_DECIMAL_POINT -D__ARM_PCS_VFP -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0/arm-xilinx-linux-gnueabi -I/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/include/c++/12.2.0 -mfloat-abi=hard --target=arm-linux-gnueabihf  -std=c++11 -fPIE -MD -MT CMakeFiles/cmTC_60b43.dir/src.cxx.o -MF CMakeFiles/cmTC_60b43.dir/src.cxx.o.d -o CMakeFiles/cmTC_60b43.dir/src.cxx.o -c /Users/peter/Desktop/Research/zynq/build/CMakeFiles/CMakeScratch/TryCompile-IieTo6/src.cxx
+        Linking CXX executable cmTC_60b43
+        /opt/homebrew/bin/cmake -E cmake_link_script CMakeFiles/cmTC_60b43.dir/link.txt --verbose=1
+        /opt/homebrew/opt/llvm/bin/clang++ --target=arm-linux-gnueabihf --sysroot=/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external -mfloat-abi=hard --target=arm-linux-gnueabihf  -Wl,-z,notext -fuse-ld=lld -B/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -L/Users/peter/Desktop/Research/mechatronics-embedded/build/sysroot_external-prefix/src/sysroot_external/usr/lib/arm-xilinx-linux-gnueabihf/12.2.0 -pie  CMakeFiles/cmTC_60b43.dir/src.cxx.o -o cmTC_60b43  -Wl,-rpath,"\\$ORIGIN"
+        
+      exitCode: 0
+...
