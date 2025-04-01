@@ -1,0 +1,64 @@
+{
+    "DH": {
+        "joints": [
+            {
+                "label": "1",
+                "name": "yaw",
+                "alpha": 1.5708,
+                "A": 0.0,
+                "theta": 0.0,
+                "D": 0.0,
+                "type": "revolute",
+                "mode": "active",
+                "offset": 1.5708,
+                "qmin": -2.964,
+                "qmax": 2.964,
+                "ftmax": 17.0845
+            },
+            {
+                "label": "2",
+                "name": "pitch",
+                "alpha": -1.5708,
+                "A": 0.0,
+                "theta": 0.0,
+                "D": 0.0,
+                "type": "revolute",
+                "mode": "active",
+                "offset": -1.5708,
+                "qmin": -1.265,
+                "qmax": 1.301,
+                "ftmax": 17.0845
+            },
+            {
+                "label": "3",
+                "name": "insertion",
+                "alpha": 1.5708,
+                "A": 0.0,
+                "theta": 0.0,
+                "D": 0.0,
+                "type": "prismatic",
+                "mode": "active",
+                "offset": -0.4826,
+                "qmin": 0.0,
+                "qmax": 0.29,
+                "ftmax": 40.9063,
+                "mass": 0.1,
+                "cx": 0.0,
+                "cy": 0.0,
+                "cz": -0.01,
+                "Ixx": 0.0001,
+                "Iyy": 0.0001,
+                "Izz": 0.0001,
+                "x1": 1.0,
+                "x2": 0.0,
+                "x3": 0.0,
+                "y1": 0.0,
+                "y2": 1.0,
+                "y3": 0.0,
+                "z1": 0.0,
+                "z2": 0.0,
+                "z3": 1.0
+            }
+        ]
+    }
+}

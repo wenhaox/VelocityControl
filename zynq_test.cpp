@@ -6,9 +6,22 @@
 #include <vector>
 #include <iomanip> // for std::setprecision
 #include "jsoncpp/include/json/json.h" // Requires jsoncpp
-//TODO: Joint limit(PID config file for joint limit), Create safety zone near limits (10% of range or fixed value), need an actual captture file for the machine, will the json file work if we got it from the machine work 
+
+#include <Amp1394/AmpIORevision.h>
+#include "PortFactory.h"
+#include "AmpIO.h"
+#include "Amp1394Time.h"
+#include "Amp1394Console.h"
+#include "EthBasePort.h"
+
+//TODO: Joint limit(PID config file for joint limit), 
+// Create safety zone near limits (10% of range or fixed value) stop if within 5% of limit
 // test joint limit wiht hand first and see for a printout
-// get the feedback from the board, do the control computation, and then write the motor currents.  The first is done by calling ReadAllBoards in the port class (in your case, ZynqEmioPort).  Once you get the feedback, you would call AmpIO::GetEncoderVelocityPredicted to get the velocity (in counts/sec).  For writing the motor current, you would call AmpIO::SetMotorCurrent to build the local buffer, and then ZynqEmioPort::WriteAllBoards to actually send it to the FPGA. 
+// get the feedback from the board, do the control computation, and then write the motor currents.  
+// The first is done by calling ReadAllBoards in the port class (in your case, ZynqEmioPort).  
+// Once you get the feedback, you would call AmpIO::GetEncoderVelocityPredicted to get the velocity (in counts/sec).  
+// For writing the motor current, you would call AmpIO::SetMotorCurrent to build the local buffer, and then ZynqEmioPort::WriteAllBoards to actually send it to the FPGA. 
+
 // osaUnitToSI Factors
 const double deg2rad = M_PI / 180.0;
 const double mm2m = 0.001;
@@ -154,113 +167,171 @@ void printActuatorInfo(const std::vector<ActuatorParams> &actuators) {
     std::cout << "-------------------------------------------------" << std::endl;
 }
 
-// Test encoder position conversion for a specific motor
-void testEncoderPosition(int motorIndex, int32_t encoderCount, const std::vector<ActuatorParams> &actuators) {
-    // Check if motor index is valid
-    if (motorIndex < 1 || motorIndex > static_cast<int>(actuators.size())) {
-        std::cerr << "Invalid motor index: " << motorIndex << std::endl;
-        std::cerr << "Valid range is 1 to " << actuators.size() << std::endl;
-        return;
-    }
-    
-    // Get actuator parameters for the specified motor
-    const ActuatorParams &actuator = actuators[motorIndex - 1]; // Convert to 0-based index
-    
-    // Convert position
-    double positionSI = convertEncoderPosition(encoderCount, actuator);
-    
-    // Check limits
-    bool withinLimits = checkPositionLimits(positionSI, actuator);
-    
-    // Print results
-    std::cout << "\nEncoder Position Conversion Test for Motor " << motorIndex << ":" << std::endl;
-    std::cout << "--------------------------------------------------" << std::endl;
-    std::cout << "Raw Encoder Count: " << encoderCount << std::endl;
-    std::cout << "With 0x800000 offset: " << (encoderCount - 0x800000) << std::endl;
-    std::cout << "Joint Type: " << actuator.jointType << std::endl;
-    std::cout << "Encoder Scale: " << actuator.encoderScale << std::endl;
-    std::cout << "Conversion Factor: " << (actuator.isPrismatic ? mm2m : deg2rad) << std::endl;
-    std::cout << "Converted Position: " << positionSI << " " 
-              << (actuator.isPrismatic ? "meters" : "radians") << std::endl;
-    
-    if (actuator.hasLimits) {
-        std::cout << "Joint Limits: [" << actuator.lowerLimit << ", " << actuator.upperLimit << "] " 
-                  << (actuator.isPrismatic ? "meters" : "radians") << std::endl;
-        std::cout << "Within Limits: " << (withinLimits ? "Yes" : "No") << std::endl;
-    } else {
-        std::cout << "Joint Limits: Not defined" << std::endl;
-    }
-    std::cout << "--------------------------------------------------" << std::endl;
-}
-
+// ---------------------------------------------------------------------------
+// Main function with full setup, PD control loop, and shutdown
+// ---------------------------------------------------------------------------
 int main(int argc, char** argv) {
+    // Check for configuration file argument
     if (argc < 2) {
         std::cerr << "Usage: " << argv[0] << " <config.json>" << std::endl;
         std::cerr << "  - config.json: Path to the robot configuration file" << std::endl;
         return -1;
     }
-
     std::string configFile = argv[1];
     
-    // Read actuator configurations
+    // Read actuator configurations from JSON
     std::vector<ActuatorParams> actuators = readActuatorConfigs(configFile);
-    
-    // Print summary of all actuators
     printActuatorInfo(actuators);
     
-    // Define test data - encoder counts and expected values for motors 1-7
-    std::vector<int32_t> encoderCounts = {8391286, 8394466, 7459811, 8388610, 8388608, 8388595, 8388558};
-    std::vector<double> expectedValues = {0.002464801315906465, -0.005285917326719919, 0.12083540215580316, 
-                                        -0.00022743738895170438, -0.0, -0.0014783430281860785, -0.00568593472379261};
+    // -------------------------------------------------------------------------
+    // SETUP: Create and configure the port and boards (same as in qladisp)
+    // -------------------------------------------------------------------------
+    unsigned int numDisp = 0;      // Number of boards to display; assume one board for this example.
+    std::vector<AmpIO*> BoardList;
+    // For simplicity, select board 0 (adjust as needed)
+    BoardList.push_back(new AmpIO(0));
+    numDisp = 1;
     
-    if (actuators.size() < 7) {
-        std::cerr << "Warning: Configuration has fewer than 7 actuators." << std::endl;
-        std::cerr << "Only processing " << actuators.size() << " actuators." << std::endl;
+    std::string portDescription = BasePort::DefaultPort();
+    std::stringstream debugStream(std::stringstream::out | std::stringstream::in);
+    BasePort::AddHardwareVersionStringList("");
+    
+    BasePort *Port = PortFactory(portDescription.c_str(), debugStream);
+    if (!Port) {
+        std::cerr << "Failed to create port using: " << portDescription << std::endl;
+        return -1;
+    }
+    if (!Port->IsOK()) {
+        std::cerr << "Failed to initialize " << Port->GetPortTypeString() << std::endl;
+        return -1;
     }
     
-    std::cout << "\nTesting specific encoder values for all motors:" << std::endl;
-    for (size_t i = 0; i < std::min(encoderCounts.size(), actuators.size()); ++i) {
-        int motorIndex = i + 1;
-        int32_t encoderCount = encoderCounts[i];
+    // Add board(s) to port
+    for (size_t i = 0; i < BoardList.size(); i++) {
+        Port->AddBoard(BoardList[i]);
+    }
+    
+    // Set protocol (using default protocol)
+    if (!Port->SetProtocol(BasePort::PROTOCOL_SEQ_RW))
+        std::cerr << "Failed to set protocol. Using current protocol." << std::endl;
+    
+    // Initialize motor currents at mid-range (0x8000)
+    const unsigned int MAX_AXES = 11;
+    uint32_t MotorCurrents[MAX_AXES];
+    for (unsigned int i = 0; i < MAX_AXES; i++) {
+        MotorCurrents[i] = 0x8000;
+    }
+    
+    // Power up the board(s)
+    for (unsigned int j = 0; j < numDisp; j++) {
+        BoardList[j]->WriteSafetyRelay(true);
+        BoardList[j]->WritePowerEnable(true);
+        // Enable all motors (assume 0x0f mask for 4 motors; adjust as needed)
+        BoardList[j]->WriteAmpEnable(0x0f, 0x0f);
+        // (Optionally) Write initial encoder preload if required
+    }
+    
+    // Initialize console for key input and display (as in qladisp)
+    Amp1394Console console;
+    console.Init();
+    if (!console.IsOK()) {
+        std::cerr << "Failed to initialize console" << std::endl;
+        return -1;
+    }
+    console.Print(1, 5, "Zynq PD Control Test");
+    console.Print(2, 5, "Press ESC to quit");
+    console.Refresh();
+    
+    // -------------------------------------------------------------------------
+    // PD Control Loop
+    // -------------------------------------------------------------------------
+    // Create vector for previous errors (one per actuator)
+    std::vector<double> prevError(actuators.size(), 0.0);
+    
+    // Set PD Gains (adjust experimentally)
+    const double Kp = 100.0;
+    const double Kd = 10.0;
+    
+    // Time management: record loop start time
+    double startTime = Amp1394_GetTime();
+    double lastTime = startTime;
+    
+    const int ESC_CHAR = 0x1b;
+    int c;
+    while ((c = console.GetChar()) != ESC_CHAR) {
+        // Read feedback from boards
+        Port->ReadAllBoards();
         
-        // Get actuator parameters
-        const ActuatorParams &actuator = actuators[i];
+        double currentTime = Amp1394_GetTime();
+        double dt = (currentTime - lastTime);
+        if (dt <= 0.0) dt = 0.001; // safeguard
+        lastTime = currentTime;
         
-        // Convert position
-        double positionSI = convertEncoderPosition(encoderCount, actuator);
-        
-        // Check against expected value
-        double expectedPos = expectedValues[i];
-        double difference = fabs(positionSI - expectedPos);
-        bool matches = difference < 1e-8;
-        
-        // Check limits
-        bool withinLimits = checkPositionLimits(positionSI, actuator);
-        
-        // Print results
-        std::cout << "\nEncoder Position Test for Motor " << motorIndex << ":" << std::endl;
-        std::cout << "--------------------------------------------------" << std::endl;
-        std::cout << "Raw Encoder Count: " << encoderCount << std::endl;
-        std::cout << "With 0x800000 offset: " << (encoderCount - 0x800000) << std::endl;
-        std::cout << "Joint Type: " << actuator.jointType << std::endl;
-        std::cout << "Encoder Scale: " << actuator.encoderScale << std::endl;
-        std::cout << "Conversion Factor: " << (actuator.isPrismatic ? mm2m : deg2rad) << std::endl;
-        
-        std::cout << "Converted Position: " << std::setprecision(15) << positionSI << " " 
-                << (actuator.isPrismatic ? "meters" : "radians") << std::endl;
-        std::cout << "Expected Position: " << std::setprecision(15) << expectedPos << " "
-                << (actuator.isPrismatic ? "meters" : "radians") << std::endl;
-        std::cout << "Difference: " << difference << (matches ? " (MATCHES)" : " (DOES NOT MATCH)") << std::endl;
-        
-        if (actuator.hasLimits) {
-            std::cout << "Joint Limits: [" << actuator.lowerLimit << ", " << actuator.upperLimit << "] " 
-                    << (actuator.isPrismatic ? "meters" : "radians") << std::endl;
-            std::cout << "Within Limits: " << (withinLimits ? "Yes" : "No") << std::endl;
-        } else {
-            std::cout << "Joint Limits: Not defined" << std::endl;
+        // Loop through each actuator to compute PD control
+        for (size_t i = 0; i < actuators.size(); i++) {
+            // For this example, we assume each actuator is driven by board 0 and motor index = actuator.index - 1
+            unsigned int motorIdx = actuators[i].index - 1;
+            // Get encoder position and predicted velocity (in raw counts and counts/sec)
+            int32_t rawPos = BoardList[0]->GetEncoderPosition(motorIdx);
+            uint32_t velPred = BoardList[0]->GetEncoderVelocityPredicted(motorIdx);
+            
+            // Convert position to SI units using configuration function
+            double posSI = convertEncoderPosition(rawPos, actuators[i]);
+            // Convert predicted velocity to SI using appropriate conversion factor
+            double conversionFactor = actuators[i].isPrismatic ? mm2m : deg2rad;
+            double velSI = static_cast<double>(velPred) * conversionFactor;
+            
+            // Desired velocity is zero (hold position)
+            double desiredVel = 0.0;
+            double error = desiredVel - velSI;
+            double derivative = (error - prevError[i]) / dt;
+            prevError[i] = error;
+            double controlEffort = Kp * error + Kd * derivative;
+            
+            // Safety zone: if position is near a limit, cap the control effort to zero.
+            // Define safety (10% of range) and stop zone (5% of range)
+            if (actuators[i].hasLimits) {
+                double range = actuators[i].upperLimit - actuators[i].lowerLimit;
+                double stopZone = 0.05 * range; // 5% of range
+                if (posSI <= (actuators[i].lowerLimit + stopZone) ||
+                    posSI >= (actuators[i].upperLimit - stopZone)) {
+                    controlEffort = 0.0;
+                    console.Print(4, 5, "Actuator %d safety zone active", actuators[i].index);
+                }
+            }
+            
+            // Compute commanded motor current (offset from mid-range 0x8000)
+            uint32_t commandedCurrent = 0x8000 + static_cast<uint32_t>(controlEffort);
+            // Set motor current in the local buffer
+            BoardList[0]->SetMotorCurrent(motorIdx, commandedCurrent);
         }
-        std::cout << "--------------------------------------------------" << std::endl;
+        
+        // Write updated motor currents to FPGA
+        Port->WriteAllBoards();
+        
+        // Refresh console and sleep briefly (for 500 microseconds if not Zynq EMIO)
+        console.Refresh();
+        if (Port->GetPortType() != BasePort::PORT_ZYNQ_EMIO)
+            Amp1394_Sleep(0.0005);
     }
+    
+    // -------------------------------------------------------------------------
+    // SHUTDOWN: Turn off power and reset settings (exactly as in qladisp)
+    // -------------------------------------------------------------------------
+    for (unsigned int j = 0; j < numDisp; j++) {
+        BoardList[j]->WritePowerEnable(false);      // Turn power off
+        BoardList[j]->WriteAmpEnable(0x0f, 0x00);       // Disable all motors
+        BoardList[j]->WriteSafetyRelay(false);
+    }
+    // (Optionally, reset encoder preloads to default if needed)
+    
+    console.End();
+    // Remove boards from port and free resources
+    for (size_t j = 0; j < BoardList.size(); j++) {
+        Port->RemoveBoard(BoardList[j]->GetBoardId());
+        delete BoardList[j];
+    }
+    delete Port;
     
     return 0;
 }
