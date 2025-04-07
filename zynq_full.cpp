@@ -10,8 +10,7 @@
  *
  * Example configuration file: sawRobotIO1394-PSM1-334809.xml.json
  */
-// TODO: pd control loop settings wjeret to read?
-// set encoder preload how ot do?
+
  #include <stdlib.h>
  #include <iostream>
  #include <fstream>
@@ -240,7 +239,7 @@
 					 posSI >= (actuators[i].upperLimit - stopZone)) {
 					 controlEffort = 0.0;
 					 safetyActive = true;
-					 // Optionally display a safety active message (here printed on row 4, but will be overwritten below).
+					 // Display a safety active message (here printed on row 4, but will be overwritten below).
 					 console.Print(4, 5, "Actuator %d safety zone active", actuators[i].index);
 				 }
 			 }
