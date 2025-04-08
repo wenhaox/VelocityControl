@@ -177,12 +177,26 @@
 	 console.Print(1, 5, "Zynq Joint Limit Test");
 	 console.Print(2, 5, "Press ESC to quit");
 	 console.Refresh();
- 
+	 //double lastPrintTime = Amp1394_GetTime();
 	 // Main loop: update sensor feedback on fixed rows.
 	 const int ESC_CHAR = 0x1b;
 	 int c;
 	 while ((c = console.GetChar()) != ESC_CHAR) {
 		 Port->ReadAllBoards();
+		 
+		 //double currentTime = Amp1394_GetTime();
+		// if (currentTime - lastPrintTime >= 5.0) {
+		//     lastPrintTime = currentTime;
+		//     for (size_t i = 0; i < actuators.size(); i++) {
+		//         unsigned int motorIdx = actuators[i].index - 1;
+		//         int32_t rawVal = BoardList[0]->GetEncoderPosition(motorIdx);
+		//         uint32_t midRange = BoardList[0]->GetEncoderMidRange();
+		//         std::cout << "Actuator " << actuators[i].index 
+		//                   << " Raw Encoder: " << rawVal 
+		//                   << ", MidRange: " << midRange << std::endl;
+		// 				  std::cout.flush();
+		//     }
+		// }
 		 // For each actuator, get and print current position and velocity.
 		 for (size_t i = 0; i < actuators.size(); i++) {
 			 unsigned int motorIdx = actuators[i].index - 1;

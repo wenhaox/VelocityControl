@@ -3,6 +3,9 @@ python3 unit_convert.py -c sawRobotIO1394-PSM1-334809.xml.json -f capture_Mon_De
 g++ -std=c++17 -Wall -O2 -Ijsoncpp/include zynq_test.cpp jsoncpp/src/lib_json/json_reader.cpp jsoncpp/src/lib_json/json_value.cpp jsoncpp/src/lib_json/json_writer.cpp -o zynq_test
 ./zynq_test sawRobotIO1394-PSM1-334809.xml.json
 
+// TODO: pd control loop settings where to read?
+// set encoder preload how ot do? get GetAnalogInput get raw adc count? 0-4096 and then use lookup tbale
+// get encoder is reutning 0, what coudl be the issue? do i have to move it mantually or will gui work
 
 // Create safety zone near limits (10% of range or fixed value) stop if within 5% of limit
 // test joint limit wiht hand first and see for a printout

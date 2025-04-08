@@ -53,6 +53,10 @@ if (Amp1394_HAS_EMIO)
   )
   
   target_link_libraries(zynq_test ${Amp1394_LIBRARIES})
+  target_link_libraries(zynq_test 
+  ${Amp1394_LIBRARIES}
+  /Users/peter/Desktop/Research/mechatronics-software/build/lib/libAmp1394Console.a # Need to change this to a non local Amp1394Console library path
+  ncurses)
 
   install (TARGETS zynq_test
            RUNTIME DESTINATION bin)
