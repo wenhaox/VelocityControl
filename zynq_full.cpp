@@ -127,14 +127,15 @@ std::vector<ActuatorParams> readActuatorConfigs(const std::string &configFile) {
     return actuators;
 }
  
-// Converts a raw encoder count to SI units.
+// Converts a raw encoder count to SI units with corrected 24-bit wrap-around.
 double convertEncoderPosition(int32_t encoderCount, const ActuatorParams &params) {
-    // Center the count and handle wrap-around for a 24-bit encoder
+    // Center the count and handle wrap-around for a 24-bit encoder.
     int32_t diff = encoderCount - 0x800000;
     const int32_t encoderMax = 0x1000000; // 2^24
+
     if (diff > encoderMax / 2)
         diff -= encoderMax;
-    else if (diff < -static_cast<int>(encoderMax / 2))
+    else if (diff <= -static_cast<int>(encoderMax / 2))
         diff += encoderMax;
 
     double posUnits = static_cast<double>(diff) * params.encoderScale;
@@ -142,13 +143,13 @@ double convertEncoderPosition(int32_t encoderCount, const ActuatorParams &params
     return posUnits * conversionFactor;
 }
  
-// Reverse conversion: from SI units to encoder count using encoder scale and proper conversion factor.
+// Reverse conversion: from SI units to encoder count with wrapped 24-bit range.
 int reverseConvertToEncoderCount(double siUnits, const ActuatorParams &params) {
     double conversionFactor = params.isPrismatic ? mm2m : deg2rad;
     int count = static_cast<int>(siUnits / (params.encoderScale * conversionFactor));
     count = count + 0x800000;
     
-    // Wrap the count to the valid 24-bit range (0 to 2^24-1).
+    // Wrap the count into the valid 24-bit range (0 to 2^24 - 1).
     const int encoderMax = 0x1000000; // 2^24
     if (count < 0)
         count += encoderMax;
@@ -209,6 +210,13 @@ bool setVelocity(double desiredVelocity, int selectedMotor, BasePort* Port,
 
     // Get the actuator corresponding to the specified motor.
     unsigned int motorIdx = actuators[selectedMotor - 1].index - 1;
+    if (!BoardList[0]->SetAmpEnable(motorIdx, true)) {
+        std::cerr << "Failed to enable amplifier for motor " << motorIdx << std::endl;
+        return -1;
+    }
+    BoardList[0]->WriteMotorControlMode(motorIdx, AmpIO::CURRENT);
+    Port->WriteAllBoards();
+
     const ActuatorParams &act = actuators[selectedMotor - 1];
 
     // For motors 1-3, unlock (release) the brake if it is engaged.
@@ -343,10 +351,11 @@ int main(int argc, char** argv) {
     BoardList[0]->WriteSafetyRelay(true);
     BoardList[0]->WritePowerEnable(true);
     BoardList[0]->WriteAmpEnable(0x0f, 0x0f);
+    
  
     // ------------------------------------------------------------------
     // Configure which motor to drive and the desired velocity (SI units).
-    int selectedMotor = 1;      // For example, control motor 1
+    int selectedMotor = 7;      // control motor 1
     double desiredVelocity = 0.5; // Example desired velocity in SI units
  
     // PD control loop: continuously update control command.
