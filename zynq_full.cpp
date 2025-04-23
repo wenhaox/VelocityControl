@@ -210,17 +210,13 @@ bool setVelocity(double desiredVelocity, int selectedMotor, BasePort* Port,
 
     // Get the actuator corresponding to the specified motor.
     unsigned int motorIdx = actuators[selectedMotor - 1].index - 1;
-    if (!BoardList[0]->SetAmpEnable(motorIdx, true)) {
-        std::cerr << "Failed to enable amplifier for motor " << motorIdx << std::endl;
-        return -1;
-    }
     BoardList[0]->WriteMotorControlMode(motorIdx, AmpIO::CURRENT);
     Port->WriteAllBoards();
 
     const ActuatorParams &act = actuators[selectedMotor - 1];
 
     // For motors 1-3, unlock (release) the brake if it is engaged.
-    if (selectedMotor <= 3) {
+/*     if (selectedMotor <= 3) {
         if (!BoardList[0]->GetAmpEnable(motorIdx)) {
             BoardList[0]->WriteAmpEnableAxis(motorIdx, true);
             bool retWrite = Port->WriteAllBoards();
@@ -230,7 +226,7 @@ bool setVelocity(double desiredVelocity, int selectedMotor, BasePort* Port,
             }
             std::cout << "Motor " << act.index << " brake unlocked." << std::endl;
         }
-    }
+    } */
     
     // Get predicted velocity (counts/sec) and convert to SI units.
     int32_t rawVel = BoardList[0]->GetEncoderVelocityPredicted(motorIdx);
@@ -266,13 +262,13 @@ bool setVelocity(double desiredVelocity, int selectedMotor, BasePort* Port,
             controlSignal = 0.0;
             BoardList[0]->SetMotorCurrent(motorIdx, controlSignal);
             // Check if the brake (amp enable) is still released.
-            if (BoardList[0]->GetAmpEnable(motorIdx)) {
-                // Re-engage the brake for motors 1-3.
-                if (selectedMotor <= 3) {
-                    BoardList[0]->WriteAmpEnableAxis(motorIdx, false);
-                    std::cout << "Motor " << act.index << " safety limit reached. Brake re-engaged." << std::endl;
-                }
-            }
+            // if (BoardList[0]->GetAmpEnable(motorIdx)) {
+            //     // Re-engage the brake for motors 1-3.
+            //     if (selectedMotor <= 3) {
+            //         BoardList[0]->WriteAmpEnableAxis(motorIdx, false);
+            //         std::cout << "Motor " << act.index << " safety limit reached. Brake re-engaged." << std::endl;
+            //     }
+            // }
             Port->WriteAllBoards();
             bool retWrite = Port->WriteAllBoards();
             if (!retWrite) {
@@ -295,7 +291,6 @@ bool setVelocity(double desiredVelocity, int selectedMotor, BasePort* Port,
               << ", Control Signal = " << controlSignal << std::endl;
     
     // Send the motor current command to the FPGA.
-    Port->WriteAllBoards();
     bool retWrite = Port->WriteAllBoards();
     if (!retWrite) {
         std::cerr << "Failed to write board status for writing control current" << std::endl;
@@ -347,16 +342,35 @@ int main(int argc, char** argv) {
     for (unsigned int i = 0; i < MAX_AXES; i++)
         MotorCurrents[i] = 0x8000;
  
-    // Initialize board power and enable signals.
-    BoardList[0]->WriteSafetyRelay(true);
-    BoardList[0]->WritePowerEnable(true);
-    BoardList[0]->WriteAmpEnable(0x0f, 0x0f);
-    
- 
+
     // ------------------------------------------------------------------
     // Configure which motor to drive and the desired velocity (SI units).
     int selectedMotor = 7;      // control motor 1
     double desiredVelocity = 0.5; // Example desired velocity in SI units
+
+    // Initialize board power and enable signals.
+    BoardList[0]->WriteSafetyRelay(true);
+    BoardList[0]->WritePowerEnable(true);
+    //BoardList[0]->WriteAmpEnableAxis(6, true);
+
+    // Set encoder preloads from analog inputs.
+    for (size_t i = 0; i < actuators.size(); i++) {
+        unsigned int motorIdx = actuators[i].index - 1;
+        int analogValue = BoardList[0]->GetAnalogInput(motorIdx);
+        double siPreset = 0.0;
+        if (!actuators[i].lookupTable.empty() && analogValue >= 0 && analogValue < 4096) {
+            siPreset = actuators[i].lookupTable[analogValue];
+        } else {
+            std::cerr << "Lookup table not available for actuator " 
+                    << actuators[i].index << std::endl;
+        }
+        int preload = reverseConvertToEncoderCount(siPreset, actuators[i]);
+        BoardList[0]->WriteEncoderPreload(motorIdx, preload);
+        std::cout << "Actuator " << actuators[i].index 
+                << ": Analog = " << analogValue 
+                << ", SI Preset = " << siPreset 
+                << ", Encoder Preload = 0x" << std::hex << preload << std::dec << std::endl;
+    }
  
     // PD control loop: continuously update control command.
     while (true) {
