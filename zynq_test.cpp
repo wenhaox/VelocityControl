@@ -51,10 +51,10 @@ static const PIDParams kPIDParams[] = {
     { 0, "yaw", "REVOLUTE",   600.0,  30.0, 0.0, true,  0.01, 50.0 },
     { 1, "pitch", "REVOLUTE", 600.0,  30.0, 0.0, true,  0.01, 50.0 },
     { 2, "insertion", "PRISMATIC", 6000.0, 200.0, 0.0, true, 0.005, 20.0 },
-    { 3, "disc_1", "REVOLUTE",    1.0,   0.08, 0.0, true, 0.0005, 10.0 },
-    { 4, "disc_2", "REVOLUTE",    1.0,   0.08, 0.0, true, 0.0005, 10.0 },
-    { 5, "disc_3", "REVOLUTE",    1.0,   0.08, 0.0, true, 0.0005, 10.0 },
-    { 6, "disc_4", "REVOLUTE",    1.0,   0.08, 0.0, true, 0.0005, 10.0 }
+    { 3, "disc_1", "REVOLUTE",    1,   0.08, 0.0, true, 0.0005, 10.0 },
+    { 4, "disc_2", "REVOLUTE",    1,   0.08, 0.0, true, 0.0005, 10.0 },
+    { 5, "disc_3", "REVOLUTE",    1,   0.08, 0.0, true, 0.0005, 10.0 },
+    { 6, "disc_4", "REVOLUTE",    1,   0.08, 0.0, true, 0.0005, 10.0 }
 };
 
 // Reads the actuator configuration from the JSON file.
@@ -190,8 +190,6 @@ void printActuatorInfo(const std::vector<ActuatorParams> &actuators) {
     }
 }
 
-// ------------------------------------------------------------------
-// Modified setVelocity() with safe derivative and dt clamping
 bool setVelocity(double desiredVelocity,
     int selectedMotor,
     BasePort* Port,
@@ -200,108 +198,108 @@ bool setVelocity(double desiredVelocity,
     double &prevTime,
     double &prevError)
 {
-static bool firstCall = true;
+    // Check that the selected motor is valid.
+    if (selectedMotor < 1 || selectedMotor > (int)actuators.size()) {
+    std::cerr << "Invalid motor index: " << selectedMotor << std::endl;
+    return false;
+    }
 
-// Check that the selected motor is valid.
-if (selectedMotor < 1 || selectedMotor > (int)actuators.size()) {
-std::cerr << "Invalid motor index: " << selectedMotor << std::endl;
-return false;
-}
+    // Look up PID gains from the constant array.
+    int pidIndex = selectedMotor - 1;  
+    double Kp = 0.0, Kd = 0.0;
+    if (pidIndex < (int)(sizeof(kPIDParams)/sizeof(PIDParams))) {
+    Kp = kPIDParams[pidIndex].p_gain;
+    Kd = kPIDParams[pidIndex].d_gain;
+    }
 
-// Look up PID gains from the constant array.
-int pidIndex = selectedMotor - 1;  // assuming arrays share the same ordering
-double Kp = 0.0, Kd = 0.0;
-if (pidIndex < (int)(sizeof(kPIDParams) / sizeof(PIDParams))) {
-Kp = kPIDParams[pidIndex].p_gain;
-Kd = kPIDParams[pidIndex].d_gain;
-}
+    // Read the board(s) and sleep briefly.
+    if (!Port->ReadAllBoards()) {
+    std::cerr << "Failed to read board status." << std::endl;
+    return false;
+    }
+    Amp1394_Sleep(0.0005);
 
-// Read the board(s) and sleep briefly.
-bool ret = Port->ReadAllBoards();
-if (!ret) {
-std::cerr << "Failed to read board status." << std::endl;
-return false;
-}
-Amp1394_Sleep(0.0005);
+    // Get the actuator corresponding to the specified motor.
+    unsigned int motorIdx = actuators[selectedMotor - 1].index - 1;
+    BoardList[0]->WriteMotorControlMode(motorIdx, AmpIO::CURRENT);
+    Port->WriteAllBoards();
 
-// Get the actuator corresponding to the specified motor.
-unsigned int motorIdx = actuators[selectedMotor - 1].index - 1;
-BoardList[0]->WriteMotorControlMode(motorIdx, AmpIO::CURRENT);
-Port->WriteAllBoards();
+    const ActuatorParams &act = actuators[selectedMotor - 1];
 
-const ActuatorParams &act = actuators[selectedMotor - 1];
+    // Get predicted velocity (counts/sec) and convert to SI units.
+    int32_t rawVel = BoardList[0]->GetEncoderVelocityPredicted(motorIdx);
+    double convFactor = (act.isPrismatic ? mm2m : deg2rad);
+    double velSI = static_cast<double>(rawVel) * act.encoderScale * convFactor;
 
-// Get predicted velocity (counts/sec) and convert to SI units.
-int32_t rawVel = BoardList[0]->GetEncoderVelocityPredicted(motorIdx);
-double convFactor = (act.isPrismatic ? mm2m : deg2rad);
-double velSI = static_cast<double>(rawVel) * act.encoderScale * convFactor;
+    // Compute error (desired velocity minus measured velocity).
+    double error = desiredVelocity - velSI;
 
-// Compute error (desired velocity minus measured velocity).
-double error = desiredVelocity - velSI;
+    // Compute dt.
+    double currentTime = Amp1394_GetTime();
+    double dt          = currentTime - prevTime;
 
-// NEW: Time & derivative calculation.
-double currentTime = Amp1394_GetTime();
-double dt = currentTime - prevTime;
-dt = std::max(dt, 1e-3);  // Clamp dt to 1 ms minimum.
+    // 1) Derivative term 
+    double rawD = (error - prevError)/dt;
+    constexpr double Dmax = 50; // A/sec
+    rawD = std::clamp(rawD, -Dmax, +Dmax);
+    double dTerm = Kd * rawD;
 
-double derivative = 0.0;
-if (!firstCall) {
-derivative = (error - prevError) / dt;
-derivative = std::clamp(derivative, -1000.0, 1000.0);
-}
-firstCall = false;
-
-// Compute the combined PD control signal.
-double controlSignal = (Kp * error + Kd * derivative);
-int currentBits = convertCurrentToBits(controlSignal);
+    // Clamp dTerm after scaling
+    constexpr double dTermMax = 0.02; 
+    dTerm = std::clamp(dTerm, -dTermMax, +dTermMax);
 
 
-// Safety zone based on position.
-int32_t rawPos = BoardList[0]->GetEncoderPosition(motorIdx);
-double posSI = convertEncoderPosition(rawPos, act);
-if (act.hasLimits) {
-double range = act.upperLimit - act.lowerLimit;
-double safetyMargin = range * 0.10;
-if (posSI <= (act.lowerLimit + safetyMargin) ||
-posSI >= (act.upperLimit - safetyMargin)) {
-// Safety condition: set control signal to 0.
-controlSignal = 0.0;
-int currentBits = convertCurrentToBits(controlSignal);
+    // 2) P-term
+    double pTerm = Kp * error;
 
-BoardList[0]->SetMotorCurrent(motorIdx, currentBits);
-Port->WriteAllBoards();
-bool retWrite = Port->WriteAllBoards();
-if (!retWrite) {
-   std::cerr << "Failed to write board status for limit reached" << std::endl;
-   return false;
-}
-return false; // Signal to exit the control loop.
-}
-}
+    // 3) Combine & clamp
+    double rawU = pTerm + dTerm;
+    constexpr double Imax = 0.5; // A
+    double u = std::clamp(rawU, -Imax, +Imax);
 
-// Write the computed motor current command.
-BoardList[0]->SetMotorCurrent(motorIdx, currentBits);
+    // 4) Slew-rate limiter
+    static double lastU = 0.0;
+    constexpr double slewRate = 10.0; // A/sec
+    double maxStep = slewRate * dt;
+    double delta   = std::clamp(u - lastU, -maxStep, +maxStep);
+    u = lastU + delta;
+    lastU = u;
 
-// Debug output.
-std::cout << "Actuator " << act.index
- << ": Desired Velocity = " << desiredVelocity
- << ", Measured Velocity = " << velSI
- << ", Error = " << error
- << ", Derivative = " << derivative
- << ", Current sent = " << controlSignal << std::endl;
+    // Safety zone based on position.
+    int32_t rawPos = BoardList[0]->GetEncoderPosition(motorIdx);
+    double posSI  = convertEncoderPosition(rawPos, act);
+    if (act.hasLimits) {
+    double range        = act.upperLimit - act.lowerLimit;
+    double safetyMargin = range * 0.10;
+    if (posSI <= (act.lowerLimit + safetyMargin) ||
+    posSI >= (act.upperLimit - safetyMargin)) {
+    // Safety condition: send zero current and exit.
+    u = 0.0;
+    lastU = u;
+    int bits = convertCurrentToBits(u);
+    BoardList[0]->SetMotorCurrent(motorIdx, bits);
+    Port->WriteAllBoards();
+    return false;
+    }
+    }
 
-// Send the current command to the FPGA.
-bool retWrite = Port->WriteAllBoards();
-if (!retWrite) {
-std::cerr << "Failed to write board status for writing control current" << std::endl;
-return false;
-}
+    // Write the computed current.
+    int bits = convertCurrentToBits(u);
+    BoardList[0]->SetMotorCurrent(motorIdx, bits);
+    Port->WriteAllBoards();
 
-// NEW: Update history.
-prevError = error;
-prevTime  = currentTime;
+    // Debug output.
+    std::cout << "Actuator " << act.index
+    << ": Err=" << error
+    << ", dRaw=" << rawD
+    << ", P=" << pTerm
+    << ", D=" << dTerm
+    << ", CMD" << u << std::endl;
 
-return true; // Signal to continue control.
+    // Update history.
+    prevError = error;
+    prevTime  = currentTime;
+    return true;
 }
 
 
@@ -349,7 +347,7 @@ int main(int argc, char** argv) {
     // ------------------------------------------------------------------
     // Configure which motor to drive and the desired velocity (SI units).
     int selectedMotor = 7;      // control motor 1
-    double desiredVelocity = 0.1; // Example desired velocity in SI units
+    double desiredVelocity = 0.5; // Example desired velocity in SI units
 
     // Initialize board power and enable signals.
     BoardList[0]->WriteSafetyRelay(true);
