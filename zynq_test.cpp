@@ -16,7 +16,7 @@
 #include "Amp1394Console.h"
 #include "EthBasePort.h"
 
-// Structure for actuator parameters, note the added lookupTable member.
+// Structure for actuator parameters
 struct ActuatorParams {
     int index;
     double encoderScale;         // Scale from raw encoder bits to physical units (per bit)
@@ -28,6 +28,14 @@ struct ActuatorParams {
     std::vector<double> lookupTable; // 4096-entry lookup table for converting analog input to SI preset
     ActuatorParams() : index(0), encoderScale(0.0), jointType("UNKNOWN"),
                        isPrismatic(false), hasLimits(false), lowerLimit(0.0), upperLimit(0.0) {}
+};
+
+struct BrakeParams {
+    int    channel;        // Analog output channel driving the brake
+    int    offset;         // Amps→bits offset (from XML)
+    double scale;          // Amps→bits scale  (from XML)
+    double releaseCurrent; // Current during 0.5 s release pulse
+    double holdCurrent;    // Current that keeps brake released
 };
 
 struct PIDParams {
@@ -46,7 +54,7 @@ struct PIDParams {
 const double deg2rad = M_PI / 180.0;
 const double mm2m   = 0.001;
 
-// Constant array for PID configuration.
+// Constant array for PID configuration
 static const PIDParams kPIDParams[] = {
     { 0, "yaw", "REVOLUTE",   600.0,  30.0, 0.0, true,  0.01, 50.0 },
     { 1, "pitch", "REVOLUTE", 600.0,  30.0, 0.0, true,  0.01, 50.0 },
@@ -57,7 +65,15 @@ static const PIDParams kPIDParams[] = {
     { 6, "disc_4", "REVOLUTE",    1,   0.08, 0.0, true, 0.0005, 10.0 }
 };
 
-// Reads the actuator configuration from the JSON file.
+static const BrakeParams kBrakeTable[] = {
+    /* axis‑0 */ {7,  32768, 16000.0,  0.15,  0.08},
+    /* axis‑1 */ {8,  32768, 16000.0,  0.15,  0.08},
+    /* axis‑2 */ {9, -32768, 16000.0, -0.25, -0.25}
+};
+
+constexpr double kBrakeReleaseTime = 0.5;   // seconds
+
+// Reads the actuator configuration from the JSON file
 std::vector<ActuatorParams> readActuatorConfigs(const std::string &configFile) {
     std::vector<ActuatorParams> actuators;
     std::ifstream inConfig(configFile);
@@ -107,7 +123,7 @@ std::vector<ActuatorParams> readActuatorConfigs(const std::string &configFile) {
                 }
             }
         }
-        // Load the lookup table if it exists. Expecting exactly 4096 values.
+        // Load the lookup table. Expecting exactly 4096 values
         if (actuatorConfigs[i].isMember("Pot") &&
         actuatorConfigs[i]["Pot"].isMember("LookupTable"))
         {
@@ -127,9 +143,9 @@ std::vector<ActuatorParams> readActuatorConfigs(const std::string &configFile) {
     return actuators;
 }
  
-// Converts a raw encoder count to SI units with corrected 24-bit wrap-around.
+// Converts a raw encoder count to SI units with corrected 24-bit wrap-around
 double convertEncoderPosition(int32_t encoderCount, const ActuatorParams &params) {
-    // Center the count and handle wrap-around for a 24-bit encoder.
+    // Center the count and handle wrap-around for a 24-bit encoder
     int32_t diff = encoderCount - 0x800000;
     const int32_t encoderMax = 0x1000000; // 2^24
 
@@ -143,13 +159,13 @@ double convertEncoderPosition(int32_t encoderCount, const ActuatorParams &params
     return posUnits * conversionFactor;
 }
  
-// Reverse conversion: from SI units to encoder count with wrapped 24-bit range.
+// Reverse conversion: from SI units to encoder count with wrapped 24-bit range
 int reverseConvertToEncoderCount(double siUnits, const ActuatorParams &params) {
     double conversionFactor = params.isPrismatic ? mm2m : deg2rad;
     int count = static_cast<int>(siUnits / (params.encoderScale * conversionFactor));
     count = count + 0x800000;
     
-    // Wrap the count into the valid 24-bit range (0 to 2^24 - 1).
+    // Wrap the count into the valid 24-bit range (0 to 2^24 - 1)
     const int encoderMax = 0x1000000; // 2^24
     if (count < 0)
         count += encoderMax;
@@ -190,220 +206,268 @@ void printActuatorInfo(const std::vector<ActuatorParams> &actuators) {
     }
 }
 
-bool setVelocity(double desiredVelocity,
-    int selectedMotor,
-    BasePort* Port,
-    std::vector<AmpIO*>& BoardList,
-    const std::vector<ActuatorParams>& actuators,
-    double &prevTime,
-    double &prevError)
+inline int BrakeAmpsToBits(const BrakeParams &bp, double amps)
 {
-    // Check that the selected motor is valid.
-    if (selectedMotor < 1 || selectedMotor > (int)actuators.size()) {
-    std::cerr << "Invalid motor index: " << selectedMotor << std::endl;
-    return false;
-    }
+    return static_cast<int>(bp.offset + bp.scale * amps);
+}
 
-    // Look up PID gains from the constant array.
-    int pidIndex = selectedMotor - 1;  
+static void releaseBrake(const BrakeParams &bp, BasePort *port, AmpIO *board)
+{
+    //Pulse the high release current
+    int bits = BrakeAmpsToBits(bp, bp.releaseCurrent);
+    board->SetMotorCurrent(bp.channel, bits);
+    port->WriteAllBoards();
+    Amp1394_Sleep(kBrakeReleaseTime);
+
+    //Switch to the lower hold current
+    bits = BrakeAmpsToBits(bp, bp.holdCurrent);
+    board->SetMotorCurrent(bp.channel, bits);
+    port->WriteAllBoards();
+}
+
+static void engageBrakes(BasePort *port, AmpIO *board)
+{
+    for (const auto &bp : kBrakeTable)
+        board->SetMotorCurrent(bp.channel, BrakeAmpsToBits(bp, 0.0));
+    port->WriteAllBoards();
+}
+
+//---------------------------------------------------------------------
+//  This function is called repeatedly to set the desired velocity
+//---------------------------------------------------------------------
+bool setVelocity(double                         desiredVelocity,
+    int                            selectedMotor,
+    BasePort*                      Port,
+    std::vector<AmpIO*>&           BoardList,
+    const std::vector<ActuatorParams>& actuators,
+    double&                        prevTime,
+    double&                        prevError)
+{
+    // ---------- 0. Sanity checks ------------------------------------------------
+    if (selectedMotor < 1 || selectedMotor > static_cast<int>(actuators.size())) {
+        std::cerr << "Invalid motor index: " << selectedMotor << std::endl;
+        return false;
+    }
+    const int pidIdx = selectedMotor - 1;
+
+    // ---------- 1. PID gains ----------------------------------------------------
     double Kp = 0.0, Kd = 0.0;
-    if (pidIndex < (int)(sizeof(kPIDParams)/sizeof(PIDParams))) {
-    Kp = kPIDParams[pidIndex].p_gain;
-    Kd = kPIDParams[pidIndex].d_gain;
+    if (pidIdx < static_cast<int>(std::size(kPIDParams))) {
+        Kp = kPIDParams[pidIdx].p_gain;
+        Kd = kPIDParams[pidIdx].d_gain;
     }
 
-    // Read the board(s) and sleep briefly.
+    // ---------- 2. Acquire latest board state ----------------------------------
     if (!Port->ReadAllBoards()) {
-    std::cerr << "Failed to read board status." << std::endl;
-    return false;
+        std::cerr << "Failed to read board status." << std::endl;
+        return false;
     }
     Amp1394_Sleep(0.0005);
 
-    // Get the actuator corresponding to the specified motor.
-    unsigned int motorIdx = actuators[selectedMotor - 1].index - 1;
+    // Map “selectedMotor” (1‑based) → board motor index (0‑based)
+    const unsigned int motorIdx = actuators[pidIdx].index - 1;
     BoardList[0]->WriteMotorControlMode(motorIdx, AmpIO::CURRENT);
     Port->WriteAllBoards();
 
-    const ActuatorParams &act = actuators[selectedMotor - 1];
+    const ActuatorParams& act = actuators[pidIdx];
 
-    // Get predicted velocity (counts/sec) and convert to SI units.
-    int32_t rawVel = BoardList[0]->GetEncoderVelocityPredicted(motorIdx);
-    double convFactor = (act.isPrismatic ? mm2m : deg2rad);
-    double velSI = static_cast<double>(rawVel) * act.encoderScale * convFactor;
+    // ---------- 3. Measure velocity --------------------------------------------
+    int32_t rawVel   = BoardList[0]->GetEncoderVelocityPredicted(motorIdx);
+    double  conv     = act.isPrismatic ? mm2m : deg2rad;
+    double  velSI    = static_cast<double>(rawVel) * act.encoderScale * conv;
 
-    // Compute error (desired velocity minus measured velocity).
-    double error = desiredVelocity - velSI;
+    // ---------- 4. PID error terms ---------------------------------------------
+    const double error = desiredVelocity - velSI;
+    const double now   = Amp1394_GetTime();
+    const double dt    = now - prevTime;
 
-    // Compute dt.
-    double currentTime = Amp1394_GetTime();
-    double dt          = currentTime - prevTime;
+    // Derivative (clamped *before* multiplication)
+    double dRaw = (error - prevError) / dt;
+    dRaw        = std::clamp(dRaw, -50.0, 50.0);          //  A/s
+    double dTerm = std::clamp(Kd * dRaw, -0.02, 0.02);    //  Nm or N
 
-    // 1) Derivative term 
-    double rawD = (error - prevError)/dt;
-    constexpr double Dmax = 50; // A/sec
-    rawD = std::clamp(rawD, -Dmax, +Dmax);
-    double dTerm = Kd * rawD;
-
-    // Clamp dTerm after scaling
-    constexpr double dTermMax = 0.02; 
-    dTerm = std::clamp(dTerm, -dTermMax, +dTermMax);
-
-
-    // 2) P-term
+    // Proportional
     double pTerm = Kp * error;
 
-    // 3) Combine & clamp
-    double rawU = pTerm + dTerm;
-    constexpr double Imax = 0.5; // A
-    double u = std::clamp(rawU, -Imax, +Imax);
 
-    // 4) Slew-rate limiter
-    static double lastU = 0.0;
-    constexpr double slewRate = 10.0; // A/sec
-    double maxStep = slewRate * dt;
-    double delta   = std::clamp(u - lastU, -maxStep, +maxStep);
-    u = lastU + delta;
-    lastU = u;
+    //----------------------------------------------------------
+    // 4b.  Release brakes if on axes 0‑2
+    //----------------------------------------------------------
+    const ActuatorParams &act = actuators[selectedMotor - 1];
+    if (act.index <= 3) {
+        releaseBrake(kBrakeTable[act.index - 1], Port, BoardList[0]);
+    }
 
-    // Safety zone based on position.
+    // ---------- 5. Combine + clamp + slew‑rate ---------------------------------
+    double cmd   = std::clamp(pTerm + dTerm, -0.5, 0.5);  //  I_max = 0.5 A
+
+    static double lastCmd = 0.0;
+    const  double maxStep = 10.0 * dt;                    // slew 10 A/s
+    cmd = std::clamp(cmd - lastCmd, -maxStep, maxStep) + lastCmd;
+    lastCmd = cmd;
+
+    // ---------- 6. Soft‑limit zone safety --------------------------------------
     int32_t rawPos = BoardList[0]->GetEncoderPosition(motorIdx);
-    double posSI  = convertEncoderPosition(rawPos, act);
+    double  posSI  = convertEncoderPosition(rawPos, act);
+
     if (act.hasLimits) {
-    double range        = act.upperLimit - act.lowerLimit;
-    double safetyMargin = range * 0.10;
-    if (posSI <= (act.lowerLimit + safetyMargin) ||
-    posSI >= (act.upperLimit - safetyMargin)) {
-    // Safety condition: send zero current and exit.
-    u = 0.0;
-    lastU = u;
-    int bits = convertCurrentToBits(u);
-    BoardList[0]->SetMotorCurrent(motorIdx, bits);
-    Port->WriteAllBoards();
-    return false;
-    }
+        const double range   = act.upperLimit - act.lowerLimit;
+        const double margin  = range * 0.10;
+
+        if (posSI <= act.lowerLimit + margin ||
+            posSI >= act.upperLimit - margin) {
+            cmd      = 0.0;
+            lastCmd  = 0.0;
+            BoardList[0]->SetMotorCurrent(motorIdx, convertCurrentToBits(0.0));
+            Port->WriteAllBoards();
+            return false;  // exit control loop
+        }
     }
 
-    // Write the computed current.
-    int bits = convertCurrentToBits(u);
-    BoardList[0]->SetMotorCurrent(motorIdx, bits);
+    // ---------- 7. Ship the command --------------------------------------------
+    BoardList[0]->SetMotorCurrent(motorIdx, convertCurrentToBits(cmd));
     Port->WriteAllBoards();
 
-    // Debug output.
+    // ---------- 8. Debug print --------------------------------------------------
     std::cout << "Actuator " << act.index
-    << ": Err=" << error
-    << ", dRaw=" << rawD
-    << ", P=" << pTerm
-    << ", D=" << dTerm
-    << ", CMD" << u << std::endl;
+    << ": DesiredVel=" << desiredVelocity
+    << ", MeasVel="     << velSI
+    << ", Err="         << error
+    << ", dRaw="        << dRaw
+    << ", P="           << pTerm
+    << ", D="           << dTerm
+    << ", CMD="         << cmd
+    << std::endl;
 
-    // Update history.
+    // ---------- 9. Update history ----------------------------------------------
     prevError = error;
-    prevTime  = currentTime;
+    prevTime  = now;
     return true;
 }
 
-
-int main(int argc, char** argv) {
-    // Expect configuration file as argument.
-    if (argc < 2) {
-        std::cerr << "Usage: " << argv[0] << " <config.json>" << std::endl;
-        return -1;
-    }
-    std::string configFile = argv[1];
+//---------------------------------------------------------------------
+//  Helper that encapsulates the main control loop.
+//  This function is called from main() to start the control loop.
+//---------------------------------------------------------------------
+int runControl(const std::string &configFile,
+    int               selectedMotor,
+    double            desiredVelocity)
+{
+    //----------------------------------------------------------
+    // 1.  Parse actuator configuration
+    //----------------------------------------------------------
     std::vector<ActuatorParams> actuators = readActuatorConfigs(configFile);
     printActuatorInfo(actuators);
 
-    // Hardware initialization.
+    //----------------------------------------------------------
+    // 2.  Hardware initialisation
+    //----------------------------------------------------------
     std::vector<AmpIO*> BoardList;
-    std::string portDescription = BasePort::DefaultPort();
-    std::stringstream debugStream;
-    BasePort* Port = PortFactory(portDescription.c_str(), debugStream);
+    std::string         portDescription = BasePort::DefaultPort();
+    std::stringstream   debugStream;
+    BasePort*           Port = PortFactory(portDescription.c_str(), debugStream);
+
     if (!Port || !Port->IsOK()) {
         std::cerr << "Port init failed." << std::endl;
         return -1;
     }
 
-    // Add board and set protocol.
     unsigned char discoveredID = Port->GetBoardId(0);
-    BoardList.push_back(new AmpIO(discoveredID));
+    BoardList.emplace_back(new AmpIO(discoveredID));
     Port->AddBoard(BoardList[0]);
+
     if (!Port->SetProtocol(BasePort::PROTOCOL_SEQ_RW)) {
         std::cerr << "Protocol set failed." << std::endl;
         return -1;
     }
-
-    // Check if the board is connected.
     if (Port->GetNumOfNodes() == 0) {
         std::cerr << "No nodes found." << std::endl;
         return -1;
     }
 
-    // Set initial motor currents.
-    const unsigned int MAX_AXES = 11;
-    uint32_t MotorCurrents[MAX_AXES];
-    for (unsigned int i = 0; i < MAX_AXES; i++)
-        MotorCurrents[i] = 0x8000;
-
-    // ------------------------------------------------------------------
-    // Configure which motor to drive and the desired velocity (SI units).
-    int selectedMotor = 7;      // control motor 1
-    double desiredVelocity = 0.5; // Example desired velocity in SI units
-
-    // Initialize board power and enable signals.
+    //----------------------------------------------------------
+    // 3.  Board power‑up
+    //----------------------------------------------------------
     BoardList[0]->WriteSafetyRelay(true);
     BoardList[0]->WritePowerEnable(true);
-    BoardList[0]->WriteAmpEnableAxis(6, true);
+    BoardList[0]->WriteAmpEnableAxis(selectedMotor - 1, true);
 
-    // Set encoder preloads from analog inputs.
-    for (size_t i = 0; i < actuators.size(); i++) {
-        unsigned int motorIdx = actuators[i].index - 1;
-        int analogValue = BoardList[0]->GetAnalogInput(motorIdx);
-        double siPreset = 0.0;
-        if (!actuators[i].lookupTable.empty() && analogValue >= 0 && analogValue < 4096) {
-            siPreset = actuators[i].lookupTable[analogValue];
-        } else {
-            std::cerr << "Lookup table not available for actuator "
-                      << actuators[i].index << std::endl;
-        }
-        int preload = reverseConvertToEncoderCount(siPreset, actuators[i]);
-        BoardList[0]->WriteEncoderPreload(motorIdx, preload);
-        std::cout << "Actuator " << actuators[i].index
-                  << ": Analog = " << analogValue
-                  << ", SI Preset = " << siPreset
-                  << ", Encoder Preload = 0x" << std::hex << preload << std::dec << std::endl;
+    //----------------------------------------------------------
+    // 4.  Encoder pre‑load from pots
+    //----------------------------------------------------------
+    for (size_t i = 0; i < actuators.size(); ++i) {
+        unsigned int motorIdx   = actuators[i].index - 1;
+        int          analogVal  = BoardList[0]->GetAnalogInput(motorIdx);
+        double       siPreset   = 0.0;
+
+    if (!actuators[i].lookupTable.empty() &&
+        analogVal >= 0 && analogVal < 4096) {
+        siPreset = actuators[i].lookupTable[analogVal];
+    } else {
+        std::cerr << "Lookup table not available for actuator "
+                << actuators[i].index << std::endl;
     }
 
-    // ** NEW: initialize timing & error history **
+    int preload = reverseConvertToEncoderCount(siPreset, actuators[i]);
+    BoardList[0]->WriteEncoderPreload(motorIdx, preload);
+
+    std::cout << "Actuator " << actuators[i].index
+        << ": Analog="          << analogVal
+        << ", SI Preset="       << siPreset
+        << ", Encoder Preload=0x" << std::hex << preload
+        << std::dec << std::endl;
+    }
+
+    //----------------------------------------------------------
+    // 5.  Real‑time control loop
+    //----------------------------------------------------------
     double prevTime  = Amp1394_GetTime();
     double prevError = 0.0;
 
-    // PD control loop: continuously update control command.
     while (true) {
-        bool continueControl = setVelocity(desiredVelocity,
-                                           selectedMotor,
-                                           Port,
-                                           BoardList,
-                                           actuators,
-                                           prevTime,
-                                           prevError);
-        if (!continueControl) {
-            std::cout << "Exiting control loop, limit reached." << std::endl;
+        bool ok = setVelocity(desiredVelocity,
+                        selectedMotor,
+                        Port,
+                        BoardList,
+                        actuators,
+                        prevTime,
+                        prevError);
+        if (!ok) {
+            std::cout << "Exiting control loop (limit reached)." << std::endl;
             break;
-        }
-
-        double currentTime = Amp1394_GetTime();
-        std::cout << "Control command sent at time: " << std::fixed
-                  << std::setprecision(6) << currentTime << " s" << std::endl;
-
-        Amp1394_Sleep(0.01); // Sleep for 10ms between updates
     }
 
-    // Shutdown sequence.
+        std::cout << "Control command sent at time: "
+            << std::fixed << std::setprecision(6)
+            << Amp1394_GetTime() << " s" << std::endl;
+
+        Amp1394_Sleep(0.01);   // 10 ms
+    }
+
+    //----------------------------------------------------------
+    // 6.  Shutdown (same sequence as original code)
+    //----------------------------------------------------------
     BoardList[0]->WritePowerEnable(false);
     BoardList[0]->WriteAmpEnable(0x0f, 0x00);
     BoardList[0]->WriteSafetyRelay(false);
+    engageBrakes(Port, BoardList[0]);
+
     Port->RemoveBoard(BoardList[0]->GetBoardId());
     delete BoardList[0];
     delete Port;
     return 0;
+}
+
+int main(int argc, char** argv)
+{
+    if (argc < 2) {
+        std::cerr << "Usage: " << argv[0] << " <config.json>" << std::endl;
+        return -1;
+    }
+
+    const std::string configFile      = argv[1];
+    constexpr int     kSelectedMotor  = 7;    // 1‑based index
+    constexpr double  kDesiredVelSI   = 0.5;  // rad/s or m/s
+
+    return runControl(configFile, kSelectedMotor, kDesiredVelSI);
 }
