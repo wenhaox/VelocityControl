@@ -59,10 +59,10 @@ static const PIDParams kPIDParams[] = {
     { 0, "yaw", "REVOLUTE",   600.0,  30.0, 0.0, true,  0.01, 50.0 },
     { 1, "pitch", "REVOLUTE", 600.0,  30.0, 0.0, true,  0.01, 50.0 },
     { 2, "insertion", "PRISMATIC", 6000.0, 200.0, 0.0, true, 0.005, 20.0 },
-    { 3, "disc_1", "REVOLUTE",    1,   0.08, 0.0, true, 0.0005, 10.0 },
-    { 4, "disc_2", "REVOLUTE",    1,   0.08, 0.0, true, 0.0005, 10.0 },
-    { 5, "disc_3", "REVOLUTE",    1,   0.08, 0.0, true, 0.0005, 10.0 },
-    { 6, "disc_4", "REVOLUTE",    1,   0.08, 0.0, true, 0.0005, 10.0 }
+    { 3, "disc_1", "REVOLUTE",    0.3,   0.01, 0.0, true, 0.0005, 10.0 },
+    { 4, "disc_2", "REVOLUTE",    0.3,   0.01, 0.0, true, 0.0005, 10.0 },
+    { 5, "disc_3", "REVOLUTE",    0.3,   0.01, 0.0, true, 0.0005, 10.0 },
+    { 6, "disc_4", "REVOLUTE",    0.3,   0.01, 0.0, true, 0.0005, 10.0 }
 };
 
 static const BrakeParams kBrakeTable[] = {
@@ -72,6 +72,8 @@ static const BrakeParams kBrakeTable[] = {
 };
 
 constexpr double kBrakeReleaseTime = 0.5;   // seconds
+constexpr double kHardCurrentLimit = 0.8;   // MaxCurrent
+
 
 // Reads the actuator configuration from the JSON file
 std::vector<ActuatorParams> readActuatorConfigs(const std::string &configFile) {
@@ -281,10 +283,10 @@ bool setVelocity(double                         desiredVelocity,
     const double now   = Amp1394_GetTime();
     const double dt    = now - prevTime;
 
-    // Derivative (clamped *before* multiplication)
+    // Derivative (clamped)
     double dRaw = (error - prevError) / dt;
     dRaw        = std::clamp(dRaw, -50.0, 50.0);          //  A/s
-    double dTerm = std::clamp(Kd * dRaw, -0.02, 0.02);    //  Nm or N
+    double dTerm = std::clamp(Kd * dRaw, -0.002, 0.002);    //  Nm or N
 
     // Proportional
     double pTerm = Kp * error;
@@ -293,18 +295,18 @@ bool setVelocity(double                         desiredVelocity,
     //----------------------------------------------------------
     // 4b.  Release brakes if on axes 0‑2
     //----------------------------------------------------------
-    const ActuatorParams &act = actuators[selectedMotor - 1];
     if (act.index <= 3) {
         releaseBrake(kBrakeTable[act.index - 1], Port, BoardList[0]);
     }
+    Port->ReadAllBoards();
 
-    // ---------- 5. Combine + clamp + slew‑rate ---------------------------------
-    double cmd   = std::clamp(pTerm + dTerm, -0.5, 0.5);  //  I_max = 0.5 A
+    
+    // ----- 5. Combine  ----------------------------
+    double ff = 0.1 * desiredVelocity;
+    double cmd = ff+ pTerm + dTerm;
 
-    static double lastCmd = 0.0;
-    const  double maxStep = 10.0 * dt;                    // slew 10 A/s
-    cmd = std::clamp(cmd - lastCmd, -maxStep, maxStep) + lastCmd;
-    lastCmd = cmd;
+    // Constrain to hardware‑safe range 
+    cmd = std::clamp(cmd, -kHardCurrentLimit, kHardCurrentLimit);
 
     // ---------- 6. Soft‑limit zone safety --------------------------------------
     int32_t rawPos = BoardList[0]->GetEncoderPosition(motorIdx);
@@ -317,7 +319,6 @@ bool setVelocity(double                         desiredVelocity,
         if (posSI <= act.lowerLimit + margin ||
             posSI >= act.upperLimit - margin) {
             cmd      = 0.0;
-            lastCmd  = 0.0;
             BoardList[0]->SetMotorCurrent(motorIdx, convertCurrentToBits(0.0));
             Port->WriteAllBoards();
             return false;  // exit control loop
