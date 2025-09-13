@@ -153,7 +153,7 @@ double convertEncoderPosition(int32_t encoderCount, const ActuatorParams &params
 
     if (diff > encoderMax / 2)
         diff -= encoderMax;
-    else if (diff <= -static_cast<int>(encoderMax / 2))
+    else if (diff < -static_cast<int>(encoderMax / 2))
         diff += encoderMax;
 
     double posUnits = static_cast<double>(diff) * params.encoderScale;
@@ -213,18 +213,39 @@ inline int BrakeAmpsToBits(const BrakeParams &bp, double amps)
     return static_cast<int>(bp.offset + bp.scale * amps);
 }
 
-static void releaseBrake(const BrakeParams &bp, BasePort *port, AmpIO *board)
-{
-    //Pulse the high release current
-    int bits = BrakeAmpsToBits(bp, bp.releaseCurrent);
-    board->SetMotorCurrent(bp.channel, bits);
-    port->WriteAllBoards();
-    Amp1394_Sleep(kBrakeReleaseTime);
+// Brake control state tracking
+static std::map<int, double> brakeReleaseStartTime;
+static std::map<int, bool> brakeReleased;
 
-    //Switch to the lower hold current
-    bits = BrakeAmpsToBits(bp, bp.holdCurrent);
-    board->SetMotorCurrent(bp.channel, bits);
-    port->WriteAllBoards();
+// Initialize brake control for an axis
+static void initializeBrakeControl(int axisIndex, BasePort *port, AmpIO *board)
+{
+    if (axisIndex < 3) { // Only axes 0-2 have brakes
+        const BrakeParams &bp = kBrakeTable[axisIndex];
+        // Start with high release current
+        int bits = BrakeAmpsToBits(bp, bp.releaseCurrent);
+        board->SetMotorCurrent(bp.channel, bits);
+        brakeReleaseStartTime[axisIndex] = Amp1394_GetTime();
+        brakeReleased[axisIndex] = false;
+    }
+}
+
+// Update brake control state (to be called in control loop)
+static void updateBrakeControl(int axisIndex, AmpIO *board)
+{
+    if (axisIndex >= 3) return; // No brake on this axis
+    
+    const BrakeParams &bp = kBrakeTable[axisIndex];
+    double currentTime = Amp1394_GetTime();
+    
+    // Check if we need to switch from release current to hold current
+    if (!brakeReleased[axisIndex] && 
+        (currentTime - brakeReleaseStartTime[axisIndex]) >= kBrakeReleaseTime) {
+        // Switch to hold current
+        int bits = BrakeAmpsToBits(bp, bp.holdCurrent);
+        board->SetMotorCurrent(bp.channel, bits);
+        brakeReleased[axisIndex] = true;
+    }
 }
 
 static void engageBrakes(BasePort *port, AmpIO *board)
@@ -264,12 +285,9 @@ bool setVelocity(double                         desiredVelocity,
         std::cerr << "Failed to read board status." << std::endl;
         return false;
     }
-    Amp1394_Sleep(0.0005);
 
-    // Map “selectedMotor” (1‑based) → board motor index (0‑based)
+    // Map "selectedMotor" (1‑based) → board motor index (0‑based)
     const unsigned int motorIdx = actuators[pidIdx].index - 1;
-    BoardList[0]->WriteMotorControlMode(motorIdx, AmpIO::CURRENT);
-    Port->WriteAllBoards();
 
     const ActuatorParams& act = actuators[pidIdx];
 
@@ -293,12 +311,11 @@ bool setVelocity(double                         desiredVelocity,
 
 
     //----------------------------------------------------------
-    // 4b.  Release brakes if on axes 0‑2
+    // 4b.  Update brake control state for axes 0‑2
     //----------------------------------------------------------
     if (act.index <= 3) {
-        releaseBrake(kBrakeTable[act.index - 1], Port, BoardList[0]);
+        updateBrakeControl(act.index - 1, BoardList[0]);
     }
-    Port->ReadAllBoards();
 
     
     // ----- 5. Combine  ----------------------------
@@ -327,6 +344,8 @@ bool setVelocity(double                         desiredVelocity,
 
     // ---------- 7. Ship the command --------------------------------------------
     BoardList[0]->SetMotorCurrent(motorIdx, convertCurrentToBits(cmd));
+    
+    // Single WriteAllBoards call for all motor commands and brake updates
     Port->WriteAllBoards();
 
     // ---------- 8. Debug print --------------------------------------------------
@@ -387,11 +406,21 @@ int runControl(const std::string &configFile,
     }
 
     //----------------------------------------------------------
-    // 3.  Board power‑up
+    // 3.  Board power‑up and motor control mode setup
     //----------------------------------------------------------
     BoardList[0]->WriteSafetyRelay(true);
     BoardList[0]->WritePowerEnable(true);
     BoardList[0]->WriteAmpEnableAxis(selectedMotor - 1, true);
+    
+    // Set motor control mode once during initialization
+    const unsigned int motorIdx = selectedMotor - 1;
+    BoardList[0]->WriteMotorControlMode(motorIdx, AmpIO::CURRENT);
+    
+    // Initialize brake control for the selected motor
+    initializeBrakeControl(motorIdx, Port, BoardList[0]);
+    
+    // Single write to apply all initialization settings
+    Port->WriteAllBoards();
 
     //----------------------------------------------------------
     // 4.  Encoder pre‑load from pots
